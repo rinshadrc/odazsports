@@ -1,0 +1,21 @@
+Options +FollowSymLinks -MultiViews -Indexes
+RewriteEngine On
+RewriteBase /odazsports/office/
+
+ErrorDocument 404 /notfound.php
+RewriteRule ^login$ login.php [QSA,L]
+RewriteRule ^logout$ logout.php [QSA,L]
+RewriteCond %{REQUEST_URI} !^user-permission [NC]
+RewriteRule ^user-permission/(.*)$ user-permission.php?uid=$1
+RewriteRule update-product/(.*)$ manage-products.php?id=$1 
+RewriteRule orders/(.*)$ manage-products.php?id=$1 
+
+RewriteRule ^pending-orders$ order-list.php?sts=0
+RewriteRule ^delivered-orders$ order-list.php?sts=2
+
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php

@@ -1,0 +1,14 @@
+Options +FollowSymLinks -MultiViews -Indexes
+RewriteEngine On
+RewriteBase /odazsports/
+
+ErrorDocument 404 /notfound.php
+
+RewriteRule ^product-detail/(.*)$ product-detail.php?id=$1
+RewriteRule ^products/(.*)$ products.php?cat=$1
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php
+
