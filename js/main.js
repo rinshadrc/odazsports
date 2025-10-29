@@ -477,9 +477,7 @@
     $(".btn-show-quickview").click(function () {
       $("#quick_view").modal("show");
     });
-    $(".btn-add-to-cart").click(function () {
-      $("#shoppingCart").modal("show");
-    });
+   
 
     $(".btn-add-note").click(function () {
       $(".add-note").addClass("open");

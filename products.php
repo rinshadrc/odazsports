@@ -1,25 +1,27 @@
 <?php
 include("template.php");
 head("Products List", 0);
+ini_set("display_errors",1);
 
 $catid = isset($_GET['cat']) ? intval($_GET['cat']) : null;
 $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
 if($catid){
-$pdtobj->where("sct_id", $catid);
+$pdtobj->where("pm.sct_id", $catid);
 }
 $pdtobj->where("pm_status", 9, "<>");
 $pdtobj->where("pd_status", 9, "<>");
 $pdtobj->orderBy("pm_id", "DESC");
 $pdtobj->groupBy("pm.pm_id");
+$pdtobj->join("tbl_sub_category sct", "pm.sct_id=sct.sct_id");
 $pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id");
-$pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,sct_id,pm_name,pm_desc,pm_code,pm_note,pm_status,is_featured,offer_tag,pm_image,pd.pd_price");
+$pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm.sct_id,pm_name,pm_desc,pm_code,pm_note,pm_status,is_featured,offer_tag,pm_image,pd.pd_price,sct.sct_title");
 
 ?>
 
 <!-- page-title -->
 <div class="tf-page-title" style="background-color: #fbae16;background-image: url('images/bg.png');background-size: cover;background-repeat: no-repeat;">
     <div class="container-full">
-        <div class="heading text-center">All Products</div>
+        <div class="heading text-center"><?php echo $catid? "Collections of ".$pdtarray[0]["sct_title"]:"All Collections" ?></div>
         <p class="text-center text-2 text_black-2 mt_5">Explore our complete collection of premium products crafted with quality and care. 
             Find the perfect choice that suits your needs and style. </p>
     </div>

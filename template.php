@@ -228,7 +228,7 @@ foreach ($pdtarray as $p) {
                             <!--  <li class="nav-wishlist"><a href="#" class="nav-icon-item"><i
                                         class="icon icon-heart"></i><span class="count-box">0</span></a></li> -->
                             <li class="nav-cart"><a href="#shoppingCart" data-bs-toggle="modal" class="nav-icon-item"><i
-                                        class="icon icon-bag"></i><span class="count-box">0</span></a></li>
+                                        class="icon icon-bag"></i><span class="count-box"></span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -530,94 +530,9 @@ function footer(){
                     <div class="tf-mini-cart-wrap">
                         <div class="tf-mini-cart-main">
                             <div class="tf-mini-cart-sroll">
-                                <div class="tf-mini-cart-items">
-                                    <div class="tf-mini-cart-item">
-                                        <div class="tf-mini-cart-image">
-                                            <a href="#">
-                                                <img src="images/products/white-2.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="tf-mini-cart-info">
-                                            <a class="title link" href="#">T-shirt</a>
-                                            <div class="meta-variant">Light gray</div>
-                                            <div class="price fw-6">$25.00</div>
-                                            <div class="tf-mini-cart-btns">
-                                                <div class="wg-quantity small">
-                                                    <span class="btn-quantity minus-btn">-</span>
-                                                    <input type="text" name="number" value="1">
-                                                    <span class="btn-quantity plus-btn">+</span>
-                                                </div>
-                                                <div class="tf-mini-cart-remove">Remove</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tf-mini-cart-item">
-                                        <div class="tf-mini-cart-image">
-                                            <a href="#">
-                                                <img src="images/products/white-3.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="tf-mini-cart-info">
-                                            <a class="title link" href="#">Oversized Motif T-shirt</a>
-                                            <div class="price fw-6">$25.00</div>
-                                            <div class="tf-mini-cart-btns">
-                                                <div class="wg-quantity small">
-                                                    <span class="btn-quantity minus-btn">-</span>
-                                                    <input type="text" name="number" value="1">
-                                                    <span class="btn-quantity plus-btn">+</span>
-                                                </div>
-                                                <div class="tf-mini-cart-remove">Remove</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="tf-mini-cart-items" id="cartWrapper">
                                 </div>
-                                <div class="tf-minicart-recommendations">
-                                    <div class="tf-minicart-recommendations-heading">
-                                        <div class="tf-minicart-recommendations-title">You may also like</div>
-                                        <div class="sw-dots small style-2 cart-slide-pagination"></div>
-                                    </div>
-                                    <div dir="ltr" class="swiper tf-cart-slide">
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <div class="tf-minicart-recommendations-item">
-                                                    <div class="tf-minicart-recommendations-item-image">
-                                                        <a href="#">
-                                                            <img src="images/products/white-3.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="tf-minicart-recommendations-item-infos flex-grow-1">
-                                                        <a class="title" href="#">Loose Fit
-                                                            Sweatshirt</a>
-                                                        <div class="price">$25.00</div>
-                                                    </div>
-                                                    <div class="tf-minicart-recommendations-item-quickview">
-                                                        <div class="btn-show-quickview quickview hover-tooltip">
-                                                            <span class="icon icon-view"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <div class="tf-minicart-recommendations-item">
-                                                    <div class="tf-minicart-recommendations-item-image">
-                                                        <a href="#">
-                                                            <img src="images/products/white-2.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="tf-minicart-recommendations-item-infos flex-grow-1">
-                                                        <a class="title" href="#">Loose Fit Hoodie</a>
-                                                        <div class="price">$25.00</div>
-                                                    </div>
-                                                    <div class="tf-minicart-recommendations-item-quickview">
-                                                        <div class="btn-show-quickview quickview hover-tooltip">
-                                                            <span class="icon icon-view"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="tf-mini-cart-bottom">
@@ -625,18 +540,13 @@ function footer(){
                             <div class="tf-mini-cart-bottom-wrap">
                                 <div class="tf-cart-totals-discounts">
                                     <div class="tf-cart-total">Subtotal</div>
-                                    <div class="tf-totals-total-value fw-6">$49.99 USD</div>
+                                    <div class="tf-totals-total-value fw-6" id="cartTotal"></div>
                                 </div>
-                                <div class="tf-cart-tax">Taxes and <a href="#">shipping</a> calculated at checkout</div>
+                                
                                 <div class="tf-mini-cart-line"></div>
 
                                 <div class="tf-mini-cart-view-checkout">
-                                    <a href="#"
-                                        class="tf-btn btn-outline radius-3 link w-100 justify-content-center">View
-                                        cart</a>
-                                    <a href="#"
-                                        class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check
-                                            out</span></a>
+                                    <a href="#" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center" id="cartCheckout">Check out</a>
                                 </div>
                             </div>
                         </div>
@@ -833,15 +743,14 @@ function footer(){
                         <div class="quantity-title fw-6">Quantity</div>
                         <div class="wg-quantity">
                             <span class="btn-quantity minus-btn">-</span>
-                            <input type="text" name="number" value="1">
+                            <input type="text" name="number" value="1" id="pdtqty">
                             <span class="btn-quantity plus-btn">+</span>
                         </div>
                     </div>
                     <div class="tf-product-info-buy-button">
-                        <form class="">
-                            <a href="#"
-                                class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add to cart&nbsp;</span><span class="tf-qty-price"></span></a>
-                        </form>
+                       
+                            <a href="#" class="tf-btn btn-fill justify-content-center fw-6 fs-16 w-100 flex-grow-1 animate-hover-btn btn-add-to-cart">Add to cart</a>
+                        
                     </div>
                 </div>
             </div>
@@ -960,10 +869,14 @@ function scripts(){
 
 
 <script>
+var size, pdtid, rate, colorname, colorid, sizeid,pmid,img,name,qty;
+var ROOT = "<?php echo ROOT ?>"; 
+    
 $(document).ready(function () {
 
-var ROOT = "<?php echo ROOT ?>"; 
-var size, pdtid, rate, colorname, colorid, sizeid;
+renderCartModal();
+
+
 var pdtdetails;
     function renderDetails(id) { 
         $("#colorWraper,#sizeWraper,#itmPrice,#showsize,#showcolor").html("");
@@ -1017,18 +930,20 @@ $(document).on("click", ".pdtSz", function(atg) {
     });
 
 $(document).on("click", ".quick-add", function () {
-        id=$(this).data("id");
+        $("#pdtqty").val(1)
+        pmid=$(this).data("id");
         name=$(this).data("name");
-        img=ROOT+"uploads/thumb/"+$(this).data("img");
+        img=$(this).data("img");
+        imgpath=ROOT+"uploads/thumb/"+img;
         $("#pdtname").html("");
         $("#pdtimg").attr("src", "");
         $("#pdtname").html(name);
-        $("#pdtimg").attr("src",img);
+        $("#pdtimg").attr("src",imgpath);
 
         $.ajax({
         url: ROOT +'ajax/common-ajax.php',
         type: 'POST',
-        data: {action: "productDetails", "id": id},
+        data: {action: "productDetails", "id": pmid},
         success: function(response) {
             try {
                 let jresp = $.parseJSON(response);
@@ -1044,11 +959,125 @@ $(document).on("click", ".quick-add", function () {
             }
         }
     });
-           
+            
 });
-   
+
+$(document).on("click", ".btn-add-to-cart", function(e) {
+        e.preventDefault();
+        
+
+        let qty = parseInt($("#pdtqty").val()) || 1;
+        let cartitems = JSON.parse(localStorage.getItem("cart") || "[]");
+        let found = false;
+        $.each(cartitems, function(key, item) {
+            if (item.sizeid == sizeid && item.pdid == pdtid && item.colorid == colorid) {
+                item.qty = parseInt(item.qty) + qty;
+                found = true;
+            }
+        })
+        if (!found) {
+            cartitems.push({
+                pmid: pmid,
+                name: name,
+                img: img,
+                rate: rate,
+                qty: qty,
+                size: size,
+                pdid: pdtid,
+                sizeid: sizeid,
+                colorname: colorname,
+                colorid: colorid
+            });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cartitems));
+        renderCartModal();
+        $("html, body").animate({
+            scrollTop: 0
+        }, "slow");
+        $("#mdl_quick_add").modal("hide");
+        $("#shoppingCart").modal("show")
+    });
+$(document).on("click", "#cartCheckout", function (e) {
+  e.preventDefault();
+
+  let products = JSON.parse(localStorage.getItem("cart") || "[]");
+  if (products.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let adminPhone = "919745452364";
+
+  let msg = "";
+  let total = 0;
+
+  products.forEach(p => {
+    if (!p.pmid) return;
+    // Decode name properly in case it has +
+    let name = decodeURIComponent(p.name.replace(/\+/g, ' '));
+    msg += `• ${name} (${p.colorname}, ${p.size})\n`;
+    msg += `Qty: ${p.qty} × ₹${p.rate}\n\n`;
+    total += parseFloat(p.rate) * parseInt(p.qty);
+  });
+
+  msg += "-------------------------\n";
+  msg += `Total: ₹${total.toFixed(2)}`;
+
+  let encodedMsg = encodeURIComponent(msg);
+  let waUrl = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
+
+  window.open(waUrl, "_blank");
+  setTimeout(() => {
+    localStorage.removeItem("cart");
+    location.reload();
+  }, 1000);
+});
   
 });
+function renderCartModal() {
+        var cartTotal = 0;
+        let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        let $wrapper = $("#cartWrapper");
+        $wrapper.empty();
+
+        if (cart.length === 0) {
+            $wrapper.html("<div class='tf-mini-cart-item'><p>Your cart is empty</p></div>");
+            $("#cartTotal").html("₹0.00");
+            $(".count-box").hide();  // hide badge when empty
+            return;
+        }
+        
+
+        $.each(cart, function (index, item) {
+            let li =`<div class="tf-mini-cart-item" data-index="${index}">
+                                        <div class="tf-mini-cart-image">
+                                            <a href="#">
+                                                <img src="${ROOT}uploads/thumb/${item.img}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="tf-mini-cart-info">
+                                            <a class="title link" href="${ROOT + "product-detail/" + item.pmid}">${item.name}</a>
+                                            <div class="meta-variant">${item.size},${item.colorname}</div>
+                                            <div class="price fw-6">₹${(item.rate * item.qty).toFixed(2)}</div>
+
+                                            <div class="tf-mini-cart-btns">
+                                                <div class="wg-quantity small">
+                                                    <div class="meta-variant" style="padding:0px 0px 0px 21px;">Qty : ${item.qty}</div>
+                                                </div>
+                                                <div class="tf-mini-cart-remove">Remove</div>
+                                            </div>
+                                        </div>
+                                                
+
+                                    </div>`;
+            $wrapper.append(li);
+            cartTotal += (item.rate * item.qty);
+        });
+        $("#cartTotal").html("₹" + cartTotal.toFixed(2));
+        // Update badge
+        $(".count-box").text(cart.length).show(); 
+    }
 </script>
 </body>
 </html>

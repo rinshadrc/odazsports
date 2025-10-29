@@ -6,8 +6,9 @@ $pid = $_GET["id"];
 $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
 $pdtobj->where("pm_id", $pid);
 $pdtobj->where("pm_status", 0);
+$pdtobj->join("tbl_sub_category sct", "pm.sct_id=sct.sct_id");
 $pdtobj->join("tbl_category ct", "pm.ct_id=ct.ct_id");
-$pdtmstarr = $pdtobj->getOne("tbl_product_master pm", "pm_id,pm_name,pm_desc,pm_code,pm_note,sct_id,pm_status,is_featured,offer_tag,pm_image,ct.ct_title");
+$pdtmstarr = $pdtobj->getOne("tbl_product_master pm", "pm_id,pm_name,pm_desc,pm_code,pm_note,pm.sct_id,pm_status,is_featured,offer_tag,pm_image,ct.ct_title,sct.sct_title");
 $pdtobj->where("pm_id", $pid);
 $pdtimgs = $pdtobj->get("tbl_images", null, "img_name");
 // print_r($pdtimgs);exit;
@@ -35,6 +36,8 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                         <a href="index.html" class="text">Home</a>
                         <i class="icon icon-arrow-right"></i>
                         <a href="#" class="text"><?php echo $pdtmstarr["ct_title"] ?></a>
+                        <i class="icon icon-arrow-right"></i>
+                        <a href="<?php echo ROOT ."products/".$pdtmstarr["sct_id"] ?>" class="text"><?php echo $pdtmstarr["sct_title"] ?></a>
                         <i class="icon icon-arrow-right"></i>
                         <span class="text"><?php echo $pdtmstarr["pm_name"] ?></span>
                     </div>
@@ -147,21 +150,20 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                         <div class="quantity-title fw-6">Quantity</div>
                                         <div class="wg-quantity">
                                             <span class="btn-quantity btn-decrease">-</span>
-                                            <input type="text" class="quantity-product" name="number" value="1">
+                                            <input type="text" class="quantity-product" name="number" value="1" id="pdtquantity">
                                             <span class="btn-quantity btn-increase">+</span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6">
                                 <div class="tf-product-info-buy-button">
-                                            <a href="#" class="tf-btn btn-fill justify-content-center w-100 fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add to cart &nbsp;</span></a>
+                                            <a href="#" class="tf-btn btn-fill justify-content-center w-100 fw-6 fs-16 flex-grow-1 animate-hover-btn " id="addtocart">Add to cart</a>
                                                     
                                     </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="tf-product-info-buy-button">
-                                            <a href="#"
-                                                class="tf-btn btn-fill justify-content-center w-100 fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart" style="background-color: black!important;"><span>Buy Now &nbsp;</span></a>
+                                            <a href="#" class="tf-btn btn-fill justify-content-center w-100 fw-6 fs-16 flex-grow-1 animate-hover-btn " id="btnBuynowcart" style="background-color: black!important;"><span>Buy Now &nbsp;</span></a>
                                     </div>
                                         </div>
                                     </div>
@@ -284,6 +286,16 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
         </section>
         <!-- /tabs -->
  <!-- product -->
+    <?php
+    $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
+    $pdtobj->where("sct_id", $pdtmstarr["sct_id"]);
+    $pdtobj->where("pm_status", 0);
+    $pdtobj->where("pm.pm_id", $pid, "!=");
+    $pdtobj->groupBy("pm.pm_id");
+    $pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id");
+    $catpdts = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm_name,pm_desc,pm_code,pm_status,is_featured,offer_tag,pm_image,pd.pd_price");
+    if(!empty($catpdts)){
+                        ?>
         <section class="flat-spacing-1 pt_0">
             <div class="container">
                 <div class="flat-title">
@@ -294,38 +306,43 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                         data-mobile="2" data-space-lg="30" data-space-md="15" data-pagination="2" data-pagination-md="3"
                         data-pagination-lg="3">
                         <div class="swiper-wrapper">
+                               <?php
+                    foreach ($catpdts as $pdt) {
+
+                    ?>
                             <div class="swiper-slide" lazy="true">
+
                                 <div class="card-product">
                                     <div class="card-product-wrapper">
-                                        <a href="product-detail.html" class="product-img">
-                                            <img class="lazyload img-product" data-src="images/products/orange-1.jpg"
-                                                src="images/products/orange-1.jpg" alt="image-product">
-                                            <img class="lazyload img-hover" data-src="images/products/white-1.jpg"
-                                                src="images/products/white-1.jpg" alt="image-product">
+                                        <a href="<?php echo ROOT . "product-detail/" . $pdt["pm_id"] ?>" class="product-img">
+                                            <img class="lazyload img-product" data-src="<?php echo ROOT . "uploads/" . $pdt['pm_image'] ?>"
+                                                src="<?php echo ROOT . "uploads/" . $pdt['pm_image'] ?>" alt="image-product">
+                                            <img class="lazyload img-hover" data-src="<?php echo ROOT . "uploads/" . $pdt['pm_image'] ?>"
+                                                src="<?php echo ROOT . "uploads/" . $pdt['pm_image'] ?>" alt="image-product">
                                         </a>
                                         <div class="list-product-btn">
-                                            <a href="#quick_add" data-bs-toggle="modal"
+                                            <a href="#" data-bs-toggle="modal" data-id="<?php echo $pdt["pm_id"]?>" data-img="<?php echo $pdt["pm_image"]?>" data-name="<?php echo $pdt["pm_name"]?>"
                                                 class="box-icon bg_white quick-add tf-btn-loading">
                                                 <span class="icon icon-bag"></span>
                                                 <span class="tooltip">Quick Add</span>
                                             </a>
-
-                                            <a href="#quick_view" data-bs-toggle="modal"
+                                            <a href="<?php echo ROOT ."product-detail/".$pdt["pm_id"] ?>"
                                                 class="box-icon bg_white quickview tf-btn-loading">
                                                 <span class="icon icon-view"></span>
-                                                <span class="tooltip">Quick View</span>
+                                                <span class="tooltip">View</span>
                                             </a>
                                         </div>
                                         
                                     </div>
                                     <div class="card-product-info">
-                                        <a href="product-detail.html" class="title link">Ribbed Tank Top</a>
-                                        <span class="price">$16.95</span>
+                                        <a href="<?php echo ROOT . "product-detail/" . $pdt["pm_id"] ?>" class="title link"><?php echo $pdt["pm_name"] ?></a>
+                                        <span class="price">₹ <?php echo $pdt["pd_price"] ?></span>
                                         
                                     </div>
                                 </div>
                             </div>
-                            
+                            <?php }
+                            ?>
                         </div>
                     </div>
                     <div class="nav-sw nav-next-slider nav-next-product box-icon w_46 round"><span
@@ -336,6 +353,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                 </div>
             </div>
         </section>
+        <?php } ?>
         <!-- /product -->
 
        <?php footer();?>
@@ -354,11 +372,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
     // var size, pdtid, rate, colorname, colorid, sizeid;
 // $(document).ready(function () {
 
-//         console.log("rwachhdfw");
-// });
-
         renderProductDetail();
-
     function renderProductDetail(id) { 
         $("#colorwrpr,#sizewrpr,#pdtprice,#pdtstrkprice,#sizeshow,#colorshow").html("");
         
@@ -395,6 +409,30 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
         $("#colorshow").html(clrnamear[0])
     }
 
+    $(document).on("click", "#btnBuynowcart", function(atg) {
+        let qty = parseInt($("#pdtquantity").val()) || 1;
+  let adminPhone = "919745452364";
+  let msg = "";
+  let total = 0;
+
+    let name = decodeURIComponent(pdtMaster.pm_name.replace(/\+/g, ' '));
+    msg += `• ${name} (${colorname}, ${size})\n`;
+    msg += `Qty: ${qty} × ₹${rate}\n\n`;
+    total += parseFloat(rate) * parseInt(qty);
+
+
+  msg += "-------------------------\n";
+  msg += `Total: ₹${total.toFixed(2)}`;
+
+  let encodedMsg = encodeURIComponent(msg);
+  let waUrl = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
+
+  window.open(waUrl, "_blank");
+  setTimeout(() => {
+    location.reload();
+  }, 1000);
+        
+    });
 $(document).on("click", ".pdtSize", function(atg) { 
         atg.preventDefault();
         myid = $(this).data("id");
@@ -410,5 +448,42 @@ $(document).on("click", ".pdtSize", function(atg) {
         $(this).addClass("activecolor");
         $("#colorshow").html($(this).data("clrnm"))
     });
+    $(document).on("click", "#addtocart", function(e) {
+        // console.log("hi here")
+        e.preventDefault();
+
+        let qty = parseInt($("#pdtquantity").val()) || 1;
+        let cartitems = JSON.parse(localStorage.getItem("cart") || "[]");
+        let found = false;
+        $.each(cartitems, function(key, item) {
+            if (item.sizeid == sizeid && item.pdid == pdtid && item.colorid == colorid) {
+                item.qty = parseInt(item.qty) + qty;
+                found = true;
+            }
+        })
+        if (!found) {
+            cartitems.push({
+                pmid: pdtMaster.pm_id,
+                name: pdtMaster.pm_name,
+                img: pdtMaster.pm_image,
+                rate: rate,
+                qty: qty,
+                size: size,
+                pdid: pdtid,
+                sizeid: sizeid,
+                colorname: colorname,
+                colorid: colorid
+            });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cartitems));
+        renderCartModal();
+        $("html, body").animate({
+            scrollTop: 0
+        }, "slow");
+        $("#shoppingCart").modal("show")
+    });
+// });
+
 </script>
 

@@ -92,7 +92,7 @@ function head($title="Movieclicks Headoffice Module"){
             <a href="<?php echo ROOT ?>" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <span style="color:var(--bs-primary);">
-                  <img src="<?php echo ROOT ?>adminassets/img/logo369.png" alt style="width: 67%;">
+                  <img src="<?php echo ROOT ?>images/logo-bk.png" alt style="width: 11%;">
                 </span>
               </span>
               <!-- <span class="app-brand-text demo menu-text fw-semibold ms-2">Movieclicks</span> -->
