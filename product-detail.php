@@ -408,6 +408,47 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
         });
         $("#colorshow").html(clrnamear[0])
     }
+$(document).on("click", "#cartCheckout", function (e) {
+  e.preventDefault();
+
+  let products = JSON.parse(localStorage.getItem("cart") || "[]");
+  if (products.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let adminPhone = "919745452364";
+ 
+  let msg = "";
+  let total = 0;
+
+  products.forEach(p => {
+    if (!p.pmid) return;
+    let name = decodeURIComponent(p.name.replace(/\+/g, ' '));
+    msg += `• ${name} (${p.colorname}, ${p.size})\n`;
+    msg += `Qty: ${p.qty} × ₹${p.rate}\n\n`;
+    total += parseFloat(p.rate) * parseInt(p.qty);
+  });
+
+  msg += "-------------------------\n";
+  msg += `Total: ₹${total.toFixed(2)}`;
+
+  let encodedMsg = encodeURIComponent(msg);
+
+  let walink = "https://web.whatsapp.com/send";
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    walink = "whatsapp://send";
+  }
+
+  let waUrl = `${walink}?phone=${adminPhone}&text=${encodedMsg}`;
+
+  window.open(waUrl, "_blank");
+
+  setTimeout(() => {
+    localStorage.removeItem("cart");
+    location.reload();
+  }, 1000);
+});
 
     $(document).on("click", "#btnBuynowcart", function(atg) {
         let qty = parseInt($("#pdtquantity").val()) || 1;
@@ -424,10 +465,14 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
   msg += "-------------------------\n";
   msg += `Total: ₹${total.toFixed(2)}`;
 
-  let encodedMsg = encodeURIComponent(msg);
-  let waUrl = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
+  let walink = "https://web.whatsapp.com/send";
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    walink = "whatsapp://send";
+  }
 
+  let waUrl = `${walink}?phone=${adminPhone}&text=${encodedMsg}`;
   window.open(waUrl, "_blank");
+
   setTimeout(() => {
     location.reload();
   }, 1000);

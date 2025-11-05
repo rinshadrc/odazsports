@@ -7,9 +7,10 @@ $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
 $pdtobj->where("pm_status", 9, "<>");
 $pdtobj->where("pd_status", 9, "<>");
 $pdtobj->join("tbl_category ct", "ct.ct_id=pm.ct_id", "INNER");
-$pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id","INNER");
-$pdtobj->groupBy("pm.pm_id");
-$pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm_name,pm_desc,pm_code,pm_note,pm_status,pm.ct_id,sct_id,is_featured,offer_tag,pm_image,ct.ct_title");
+$pdtobj->join("tbl_sub_category sct", "sct.sct_id=pm.sct_id", "INNER");
+ $pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id","INNER");
+ $pdtobj->groupBy("pm.pm_id");
+$pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm_name,pm_desc,pm_code,pm_note,pm_status,pm.ct_id,pm.sct_id,is_featured,offer_tag,pm_image,ct.ct_title,sct.sct_title");
 
 ?>
 <!-- Content wrapper -->
@@ -23,14 +24,14 @@ $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm_name,pm_des
             <h5 class="card-title mb-0 ms-2 text-nowrap text-red">Products</h5>
           </div>
           <div>
-            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search Product">
+            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search Product/Category">
           </div>
         </div>
       </div>
       <div class="row ">
         <h6 class="text-light fw-medium" id="msgNoData"></h6>
         <?php foreach ($pdtarray as $pdts){ ?>
-          <div class="col-12 col-sm-4 col-lg-4 mb-6 tile" data-pdt="<?php echo strtolower($pdts["pm_name"]); ?>">
+          <div class="col-12 col-sm-4 col-lg-4 mb-6 tile" data-pdt="<?php echo strtolower($pdts["pm_name"]); ?>" data-cat="<?php echo strtolower($pdts["ct_title"]); ?>" data-scat="<?php echo strtolower($pdts["sct_title"]); ?>">
             <div class="card">
               <div class="front" style="padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);">
                 <div class="row">
@@ -40,8 +41,9 @@ $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm_name,pm_des
                   </div>
                   <div class="col-md-8 text-left">
                     <h6 class="mt-4 fw-medium" style="margin-top: 0px !important;margin-bottom: 5px;"><?php echo $pdts["pm_name"] ?></h6>
-                    <p style="font-size: 12px;margin-bottom: 5px;">Product No. : <?php echo $pdts["pm_code"] ?></p>
+                    <!-- <p style="font-size: 12px;margin-bottom: 5px;">Product No. : <?php echo $pdts["pm_code"] ?></p> -->
                     <p style="font-size: 12px;margin-bottom: 5px;">Category : <?php echo $pdts["ct_title"] ?></p>
+                    <p style="font-size: 12px;margin-bottom: 5px;">Sub Category : <?php echo $pdts["sct_title"] ?></p>
                    
                     <div class="d-flex text-left">
                       <a href="<?php echo ADMINROOT . "update-product/" . $pdts["pm_id"] ?>" class="btn btn-sm  btn-outline-secondary btn-icon waves-effect me-4" ><i class="ri-edit-box-line "></i></a>
@@ -145,23 +147,30 @@ scripts();
 $(function() {
 //SEARCH PRODUCTS
   $("#searchInput").on("keyup", function() {
-    const searchWord = $(this).val().toLowerCase();
-    let hasVisible = false;
-    $(".tile").each(function() {
-      const title = $(this).data("pdt");
-      if (title.toLowerCase().indexOf(searchWord) != -1) {
-        $(this).show();
-        hasVisible = true;
-      } else {
-        $(this).hide();
-      } 
-    });
-    if (hasVisible) {
-      $("#msgNoData").html("");
-    } else { 
-      $("#msgNoData").html("No Product Found");
+  const searchWord = $(this).val().toLowerCase();
+  let hasVisible = false;
+
+  $(".tile").each(function() {
+    const title = $(this).data("pdt")?.toString().toLowerCase() || "";
+    const category = $(this).data("cat")?.toString().toLowerCase() || "";
+    const subcategory = $(this).data("scat")?.toString().toLowerCase() || "";
+
+    // Check if search word matches title, category, or subcategory
+    if (title.includes(searchWord) || category.includes(searchWord) || subcategory.includes(searchWord)) {
+      $(this).show();
+      hasVisible = true;
+    } else {
+      $(this).hide();
     }
   });
+
+  if (hasVisible) {
+    $("#msgNoData").html("");
+  } else {
+    $("#msgNoData").html("No Product Found");
+  }
+});
+
   //GETTING PRODUCT DETAILS
 
 $(document).on("click",".openModal",function(evt) {
@@ -171,7 +180,7 @@ $(document).on("click",".openModal",function(evt) {
   $("#pdtName").html($(this).data("ttl"));
   $("#pdtNo").html($(this).data("no"));
   $("#pdtDesc").html($(this).data("desc"));
-  $("#pdtTag").html($(this).data("tag")); 
+  $("#pdtTag").html($(this).data("tag"));
 
   $.ajax({
   url: '<?php echo ROOT?>ajax/product-ajax.php',
