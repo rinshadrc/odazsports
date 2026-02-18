@@ -3,7 +3,7 @@ include("includes/config.php");
 include("includes/MysqliDb.php");
 
 function head($title="Odaz Sports",$homepage=true){
- global $categories;
+global $categories;
 $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
 $pdtobj->where("ct_status", 0);
 $pdtobj->join("tbl_sub_category sct", "sct.ct_id=ct.ct_id AND sct.sct_status=0");
@@ -53,6 +53,9 @@ foreach ($pdtarray as $p) {
       .activecolor{
         border-color: black!important;
         box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.1019607843);
+    }
+    .is-invalid{
+        border: 1px solid red!important;
     }
    
 </style>
@@ -163,7 +166,7 @@ foreach ($pdtarray as $p) {
                                                                 <div class="swiper-slide" lazy="true">
                                                                     <div class="card-product">
                                                                         <div class="card-product-wrapper">
-                                                                            <a href="#" class="product-img">
+                                                                            <a href="<?php echo ROOT ."product-detail/".$pdt["pm_id"] ?>" class="product-img">
                                                                                 <img class="lazyload img-product" data-src="<?php echo ROOT . "uploads/" . $pdt["pm_image"] ?>" src="<?php echo ROOT . "uploads/" . $pdt["pm_image"] ?>" alt="image-product">
                                                                                 <img class="lazyload img-hover"
                                                                                     data-src="<?php echo ROOT . "uploads/" . $pdt["pm_image"] ?>"
@@ -185,8 +188,8 @@ foreach ($pdtarray as $p) {
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-product-info">
-                                                                            <a href="#" class="title link"><?php echo $pdt["pm_name"]?></a>
-                                                                            <span class="price">₹<?php echo $pdt["pd_price"]; ?></span>
+                                                                            <a href="<?php echo ROOT ."product-detail/".$pdt["pm_id"] ?>" class="title link"><?php echo $pdt["pm_name"]?></a>
+                                                                            <span class="price">AED <?php echo $pdt["pd_price"]; ?></span>
                                                                             
                                                                         </div>
                                                                     </div>
@@ -217,14 +220,22 @@ foreach ($pdtarray as $p) {
                                 <li class="menu-item"><a
                                         href="<?php echo ROOT?>contactus"
                                         class="item-link">Contact Us</a></li>
+                                        <?php if($_SESSION["CUST"]){?>
+                                         <li class="menu-item"><a
+                                        href="<?php echo ROOT?>profile"
+                                        class="item-link">My Account</a></li>
+                                        <?php }?>
+
                             </ul>
                         </nav>
                     </div>
                     <div class="col-xl-3 col-md-4 col-3">
                         <ul class="nav-icon d-flex justify-content-end align-items-center gap-20">
 
-                            <!-- <li class="nav-account"><a href="#login" data-bs-toggle="modal" class="nav-icon-item"><i
-                                        class="icon icon-account"></i></a></li> -->
+                            <?php if(!$_SESSION["CUST"]){
+echo "<li class='nav-account'><a href='#login' data-bs-toggle='modal' class='nav-icon-item'><i class='icon icon-account'></i></a></li>";
+                            }
+                            ?>
                             <!--  <li class="nav-wishlist"><a href="#" class="nav-icon-item"><i
                                         class="icon icon-heart"></i><span class="count-box">0</span></a></li> -->
                             <li class="nav-cart"><a href="#shoppingCart" data-bs-toggle="modal" class="nav-icon-item"><i
@@ -459,6 +470,15 @@ function footer(){
  <li>
                                         <a href="<?php echo ROOT ?>contactus" class="footer-menu_item">Contact Us</a>
                                     </li>
+                                    <li>
+                                        <a href="<?php echo ROOT ?>terms" class="footer-menu_item">Terms & Conditions</a>
+                                    </li> <li>
+                                        <a href="<?php echo ROOT ?>privacy-policy" class="footer-menu_item">Privacy Policy</a>
+                                    </li> <li>
+                                        <a href="<?php echo ROOT ?>cookie-policy" class="footer-menu_item">Cookie Policy</a>
+                                    </li><li>
+                                        <a href="<?php echo ROOT ?>refund-policy" class="footer-menu_item"> Refund Policy</a>
+                                    </li>
                                     
                                    
                                 </ul>
@@ -494,7 +514,7 @@ function footer(){
                             <div class="col-12">
                                 <div
                                     class="footer-bottom-wrap d-flex gap-20 flex-wrap justify-content-between align-items-center">
-                                    <div style="width: 100%;text-align: center;" class="footer-menu_item">© 2025 Odaz. All Rights Reserved</div>
+                                    <div style="width: 100%;text-align: center;" class="footer-menu_item">© 2026 Odaz. All Rights Reserved</div>
 
                                 </div>
                             </div>
@@ -546,7 +566,7 @@ function footer(){
                                 <div class="tf-mini-cart-line"></div>
 
                                 <div class="tf-mini-cart-view-checkout">
-                                    <a href="#" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center" id="cartCheckout">Check out</a>
+                                    <a href="<?php echo ROOT?>checkout" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center" id="cartCheckout">Check out</a>
                                 </div>
                             </div>
                         </div>
@@ -612,6 +632,135 @@ function footer(){
         </div>
     </div>
     <!-- /modal quick_add -->
+      <!-- modal login -->
+    <div class="modal modalCentered fade form-sign-in modal-part-content" id="login">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="header">
+                    <div class="demo-title">Log in</div>
+                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                </div>
+                <div class="tf-login-form">
+                    <form id="frmLogin">
+                        <input type="hidden" name="action" value="login">
+
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="text" name="txtLogEmail" id="txtLogEmail">
+                            <label class="tf-field-label" for="">Email *</label>
+                        </div>
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="password" name="txtLogPwd" id="txtLogPwd">
+                            <label class="tf-field-label" for="">Password *</label>
+                        </div>
+                        <div>
+                            <a href="#forgotPassword" data-bs-toggle="modal" class="btn-link link">Forgot your
+                                password?</a>
+                        </div>
+                        <div class="bottom">
+                            <div class="w-100">
+                                <button type="submit" id="btnLogin"
+                                    class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Log
+                                        in</span></button>
+                            </div>
+                            <div class="w-100">
+                                <a href="#register" data-bs-toggle="modal" class="btn-link fw-6 w-100 link">
+                                    New customer? Create your account
+                                    <i class="icon icon-arrow1-top-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-2" id="LogErrMsg"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal modalCentered fade form-sign-in modal-part-content" id="forgotPassword">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="header">
+                    <div class="demo-title">Reset your password</div>
+                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                </div>
+                <div class="tf-login-form">
+                    <form id="frmForgot">
+                        <input type="hidden" name="action" value="reset">
+
+                        <div>
+                            <p>Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt
+                                out, click unsubscribe in our emails</p>
+                        </div>
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="email" name="txtFgtEmail" id="txtFgtEmail">
+                            <label class="tf-field-label" for="">Email *</label>
+                        </div>
+                        <div>
+                            <a href="#login" data-bs-toggle="modal" class="btn-link link">Cancel</a>
+                        </div>
+                        <div class="bottom">
+                            <div class="w-100">
+                                <button type="submit" id="btnForgt"
+                                    class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Reset
+                                        password</span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-2" id="FgtErrMsg"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal modalCentered fade form-sign-in modal-part-content" id="register">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="header">
+                    <div class="demo-title">Register</div>
+                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                </div>
+                <div class="tf-login-form">
+                    <form id="frmRegister">
+                        <input type="hidden" name="action" value="register">
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="text" name="txtname" id="txtname">
+                            <label class="tf-field-label" for="">First name</label>
+                        </div>
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="text" name="txtmobile" id="txtmobile">
+                            <label class="tf-field-label" for="">Mobile No.</label>
+                        </div>
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="text" name="txtEmail" id="txtEmail">
+                            <label class="tf-field-label" for="">Email *</label>
+                        </div>
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="password" name="txtpwd" id="txtpwd">
+                            <label class="tf-field-label" for="">Password *</label>
+                        </div>
+                        <div class="tf-field style-1">
+                            <input class="tf-field-input tf-input" placeholder=" " type="password" id="confirmpwd">
+                            <label class="tf-field-label" for="">Confirm Password *</label>
+                        </div>
+                        <div class="bottom">
+                            <div class="w-100">
+                                <button type="submit" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center" id="btnRegister"><span>Register</span></button>
+                            </div>
+                            <div class="w-100">
+                                <a href="#login" data-bs-toggle="modal" class="btn-link fw-6 w-100 link">
+                                    Already have an account? Log in here
+                                    <i class="icon icon-arrow1-top-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-2" id="RegErrMsg"></div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /modal login -->
 
     <!-- modal find_size -->
     <div class="modal fade modalDemo tf-product-modal popup-findsize" id="find_size">
@@ -756,7 +905,7 @@ var pdtdetails;
         sizeid = curentItem.size;
         colorname = clrnamear[0];
         colorid = clridarr[0];
-        $("#itmPrice").html("₹ " + price);
+        $("#itmPrice").html("AED  " + price);
         index = 0;
         activecls = "activecolor";
         
@@ -822,7 +971,7 @@ $(document).on("click", ".btn-add-to-cart", function(e) {
         
 
         let qty = parseInt($("#pdtqty").val()) || 1;
-        let cartitems = JSON.parse(localStorage.getItem("cart") || "[]");
+        let cartitems = JSON.parse(localStorage.getItem("cart") || "[]"); 
         let found = false;
         $.each(cartitems, function(key, item) {
             if (item.sizeid == sizeid && item.pdid == pdtid && item.colorid == colorid) {
@@ -853,47 +1002,47 @@ $(document).on("click", ".btn-add-to-cart", function(e) {
         $("#mdl_quick_add").modal("hide");
         $("#shoppingCart").modal("show")
     });
-$(document).on("click", "#cartCheckout", function (e) {
-  e.preventDefault();
+// $(document).on("click", "#cartCheckout", function (e) {
+//   e.preventDefault();
 
-  let products = JSON.parse(localStorage.getItem("cart") || "[]");
-  if (products.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
+//   let products = JSON.parse(localStorage.getItem("cart") || "[]");
+//   if (products.length === 0) {
+//     alert("Your cart is empty!");
+//     return;
+//   }
 
-  let adminPhone = "919745452364";
+//   let adminPhone = "919745452364";
  
-  let msg = "";
-  let total = 0;
+//   let msg = "";
+//   let total = 0;
 
-  products.forEach(p => {
-    if (!p.pmid) return;
-    let name = decodeURIComponent(p.name.replace(/\+/g, ' '));
-    msg += `• ${name} (${p.colorname}, ${p.size})\n`;
-    msg += `Qty: ${p.qty} × ₹${p.rate}\n\n`;
-    total += parseFloat(p.rate) * parseInt(p.qty);
-  });
+//   products.forEach(p => {
+//     if (!p.pmid) return;
+//     let name = decodeURIComponent(p.name.replace(/\+/g, ' '));
+//     msg += `• ${name} (${p.colorname}, ${p.size})\n`;
+//     msg += `Qty: ${p.qty} × AED ${p.rate}\n\n`;
+//     total += parseFloat(p.rate) * parseInt(p.qty);
+//   });
 
-  msg += "-------------------------\n";
-  msg += `Total: ₹${total.toFixed(2)}`;
+//   msg += "-------------------------\n";
+//   msg += `Total: AED ${total.toFixed(2)}`;
 
-  let encodedMsg = encodeURIComponent(msg);
+//   let encodedMsg = encodeURIComponent(msg);
 
-  let walink = "https://web.whatsapp.com/send";
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    walink = "whatsapp://send";
-  }
+//   let walink = "https://web.whatsapp.com/send";
+//   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+//     walink = "whatsapp://send";
+//   }
 
-  let waUrl = `${walink}?phone=${adminPhone}&text=${encodedMsg}`;
+//   let waUrl = `${walink}?phone=${adminPhone}&text=${encodedMsg}`;
 
-  window.open(waUrl, "_blank");
+//   window.open(waUrl, "_blank");
 
-  setTimeout(() => {
-    localStorage.removeItem("cart");
-    location.reload();
-  }, 1000);
-});
+//   setTimeout(() => {
+//     localStorage.removeItem("cart");
+//     location.reload();
+//   }, 1000);
+// });
 
 
 // Remove cart item
@@ -903,6 +1052,168 @@ $(document).on("click", ".remove-cart", function () {
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
     renderCartModal();
+});
+
+jQuery(document).on('submit', '#frmRegister', function(event) {
+event.preventDefault();
+$("#RegErrMsg").html("");
+$('#frmRegister is-invalid').removeClass('is-invalid');
+regvalid=true;
+msg="";
+//register txtRname txtRmobile txtRemail btnReglog
+if($("#txtname").val()==""){
+$("#txtname").addClass('is-invalid');
+msg+="Please enter your name<br>";
+regvalid=false;  
+}
+if ($("#txtEmail").val().trim() === "") {
+    $("#txtEmail").addClass('is-invalid');
+    msg += "Enter Email ID<br>";
+    regvalid = false;
+}
+else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("#txtEmail").val())) {
+    $("#txtEmail").addClass('is-invalid');
+    msg += "Enter a valid Email ID<br>";
+    regvalid = false;
+}
+if(! /^\d{9}$/.test($("#txtmobile").val())){
+$("#txtmobile").addClass('is-invalid');
+msg+="Enter a valid mobile number<br>";
+regvalid=false; 
+}
+// password check
+if($("#txtpwd").val()==""){
+    $("#txtpwd").addClass('is-invalid');
+    msg+="Please enter password<br>";
+    regvalid=false;  
+}
+
+// confirm password check
+if($("#confirmpwd").val()==""){
+    $("#confirmpwd").addClass('is-invalid');
+    msg+="Please confirm your password<br>";
+    regvalid=false;  
+} else if($("#txtpwd").val() != $("#confirmpwd").val()){
+    $("#confirmpwd").addClass('is-invalid');
+    msg+="Passwords do not match<br>";
+    regvalid=false;  
+}
+
+if(regvalid){
+$("#btnRegister").html("Processing..").attr("disabled","disabled");
+
+jQuery.ajax({
+url: '<?php echo ROOT?>ajax/customer-ajax.php',
+type: 'POST',
+data:$("#frmRegister").serialize(),
+success: function(response, textStatus, xhr) {
+$("#btnRegister").html("Register").removeAttr("disabled");
+try{
+jresp=$.parseJSON(response);
+if(jresp.status=="done"){
+$("<div>").addClass('text-success').html("Successfully registered").appendTo('#RegErrMsg');
+window.location.href="<?php echo ROOT?>"
+
+}
+if(jresp.status=="exist"){
+$("<div>").addClass('text-danger').html(jresp.msg).appendTo('#RegErrMsg');
+
+}
+}catch(exp){
+$("<div>").addClass('text-danger').html("Something went wrong, Please try again").appendTo('#RegErrMsg');
+}
+//called when successful
+},
+error: function(xhr, textStatus, errorThrown) {
+//called when there is an error
+}
+});
+}else{
+$("<div>").addClass('text-danger').html(msg).appendTo('#RegErrMsg');
+}
+});
+
+jQuery(document).on('submit', '#frmForgot', function(event) {
+event.preventDefault();
+valid=true;
+$("#FgtErrMsg").html(""); 
+if($("#txtFgtEmail").val()==""){
+$("#txtFgtEmail").addClass('is-invalid');
+msg+="Please enter your Email Id<br>";
+valid=false;  
+}
+if(valid){
+
+$("#btnForgt").html("Processing..").attr("disabled","disabled");
+jQuery.ajax({
+url: '<?php echo ROOT?>ajax/customer-ajax.php',
+type: 'POST',
+data:$("#frmForgot").serialize(),
+success: function(response, textStatus, xhr) {
+$("#btnForgt").html("Reset").removeAttr("disabled");
+try{
+jresp=$.parseJSON(response);
+if(jresp.status=="done"){
+$("<div>").addClass('text-success').html("Your profile password has been reset.<br>Please check your Email to get new password").appendTo('#FgtErrMsg');
+}
+if(jresp.status=="notexist"){
+$("<div>").addClass('text-danger').html("The Email ID is not registered in Odaz Sports").appendTo('#FgtErrMsg');
+}
+}catch(exp){
+$("<div>").addClass('text-danger').html("Something went wrong, Please try again").appendTo('#FgtErrMsg');
+}
+},
+error: function(xhr, textStatus, errorThrown) {
+}
+});
+
+}else{
+$("<div>").addClass('text-danger').html("Please check all inputs").appendTo('#FgtErrMsg');
+    
+}
+
+}); 
+jQuery(document).on('submit', '#frmLogin', function(event) { 
+event.preventDefault();
+logvalid=true;
+$("#LogErrMsg").html("");
+if($("#txtLogEmail").val()==""){
+$("#txtLogEmail").addClass('is-invalid');
+msg+="Please enter your Email ID<br>";
+logvalid=false;  
+}
+if(logvalid){
+$("#btnLogin").html("Processing..").attr("disabled","disabled");
+jQuery.ajax({
+url: '<?php echo ROOT?>ajax/customer-ajax.php',
+type: 'POST',
+data:$("#frmLogin").serialize(),
+success: function(response, textStatus, xhr) { 
+$("#btnLogin").html("Login").removeAttr("disabled");
+try{
+jresp=$.parseJSON(response);
+if(jresp.status=="done"){
+// location.reload();
+window.location.href="<?php echo ROOT?>"
+}
+if(jresp.status=="error"){
+$("<div>").addClass('text-danger').html("Password Incorrect").appendTo('#LogErrMsg');
+
+}
+if(jresp.status=="empty"){
+$("<div>").addClass('text-danger').html("Username or Password Incorrect").appendTo('#LogErrMsg');
+}
+}catch(exp){
+$("<div>").addClass('text-danger').html("Something went wrong, Please try again").appendTo('#LogErrMsg');
+}
+},
+error: function(xhr, textStatus, errorThrown) {
+}
+});
+}else{
+$("<div>").addClass('text-danger').html(msg).appendTo('#LogErrMsg');
+}
+
 });
   
 });
@@ -914,7 +1225,7 @@ function renderCartModal() {
 
         if (cart.length === 0) {
             $wrapper.html("<div class='tf-mini-cart-item'><p>Your cart is empty</p></div>");
-            $("#cartTotal").html("₹0.00");
+            $("#cartTotal").html("AED 0.00");
             $(".count-box").hide();  // hide badge when empty
             return;
         }
@@ -930,7 +1241,7 @@ function renderCartModal() {
                                         <div class="tf-mini-cart-info">
                                             <a class="title link" href="${ROOT + "product-detail/" + item.pmid}">${item.name}</a>
                                             <div class="meta-variant">${item.size},${item.colorname}</div>
-                                            <div class="price fw-6">₹${(item.rate * item.qty).toFixed(2)}</div>
+                                            <div class="price fw-6">AED ${(item.rate * item.qty).toFixed(2)}</div>
 
                                             <div class="tf-mini-cart-btns">
                                                 <div class="wg-quantity small">
@@ -945,7 +1256,7 @@ function renderCartModal() {
             $wrapper.append(li);
             cartTotal += (item.rate * item.qty);
         });
-        $("#cartTotal").html("₹" + cartTotal.toFixed(2));
+        $("#cartTotal").html("AED " + cartTotal.toFixed(2));
         // Update badge
         $(".count-box").text(cart.length).show();  
     }

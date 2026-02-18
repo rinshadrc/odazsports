@@ -45,7 +45,7 @@ foreach ($pdtarray as $pdt) {
                 <div class="masonry-layout-v2">
                     <div class="item-1 collection-item-v5 hover-img wow fadeInUp" data-wow-delay="0s">
                         <div class="collection-inner">
-                            <a href="#" class="collection-image img-style">
+                            <a href="<?php echo ROOT?>products" class="collection-image img-style">
                                 <img class="lazyload" data-src="images/collections/collection-64.jpg"
                                     src="images/collections/collection-64.jpg" alt="collection-img">
                             </a>
@@ -57,7 +57,7 @@ foreach ($pdtarray as $pdt) {
                     </div>
                     <div class="item-2 collection-item-v5 hover-img wow fadeInUp" data-wow-delay="0s">
                         <div class="collection-inner">
-                            <a href="#" class="collection-image img-style">
+                            <a href="<?php echo ROOT?>products" class="collection-image img-style">
                                 <img class="lazyload" data-src="images/collections/collection-24.jpg"
                                     src="images/collections/collection-24.jpg" alt="collection-img">
                             </a>
@@ -69,7 +69,7 @@ foreach ($pdtarray as $pdt) {
                     </div>
                     <div class="item-3 collection-item-v5 hover-img wow fadeInUp" data-wow-delay="0s">
                         <div class="collection-inner">
-                            <a href="#" class="collection-image img-style">
+                            <a href="<?php echo ROOT?>products" class="collection-image img-style">
                                 <img class="lazyload" data-src="images/collections/collection-42.jpg"
                                     src="images/collections/collection-42.jpg" alt="collection-img">
                             </a>
@@ -135,7 +135,7 @@ foreach ($pdtarray as $pdt) {
                                     </div>
                                     <div class="card-product-info">
                                         <a href="#" class="title link"><?php echo $ltpdt["pm_name"] ?></a>
-                                        <span class="price">₹<?php echo $ltpdt["pd_price"] ?></span>
+                                        <span class="price">AED <?php echo $ltpdt["pd_price"] ?></span>
                                         
                                     </div>
                                 </div>
@@ -239,7 +239,7 @@ foreach ($pdtarray as $pdt) {
                                             </div>
                                             <div class="card-product-info">
                                                 <a href="#" class="title link"><?php echo $pdt["pm_name"] ?></a>
-                                                <span class="price">₹<?php echo $pdt["pd_price"]; ?></span>
+                                                <span class="price">AED <?php echo $pdt["pd_price"]; ?></span>
                                                 
                                             </div>
                                         </div>
@@ -463,6 +463,10 @@ foreach ($pdtarray as $pdt) {
 
     </div>
        <?php scripts();?>
+       <script>
+localStorage.removeItem("checkoutProduct");
+
+       </script>
 
    
   

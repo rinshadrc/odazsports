@@ -12,19 +12,20 @@ switch ($action):
 case "register": 
 $name=$_POST["txtname"];
 $mobile=$_POST["txtmobile"];
+$email=$_POST["txtEmail"];
 $pwd=$_POST["txtpwd"];
 
 $regobj=new MysqliDb(HOST,USER,PWD,DB);
-$regobj->where("cust_mobile",$mobile,"LIKE");
+$regobj->where("cust_email",$email,"LIKE");
 $loginarray=$regobj->getOne("tbl_customers","cust_email,cust_name,cust_id,cust_mobile");
 if($regobj->count >0)
 {
-$out["msg"]=$loginarray["cust_mobile"]." given mobile number already in use";
+$out["msg"]=$loginarray["cust_email"]." given email Id already in use";
 $out["status"]="exist";
 }
 else
 {
-$regarry=Array("cust_name"=>$name,"cust_mobile"=>$mobile,"cust_pwd"=>$pwd);
+$regarry=Array("cust_name"=>$name,"cust_mobile"=>$mobile,"cust_pwd"=>$pwd,"cust_email"=>$email);
 $regobj->insert("tbl_customers",$regarry);
 if(!$regobj->getLastError()){
 $out["status"]="done";
@@ -34,11 +35,11 @@ echo json_encode($out);
 break;
 case "login":
   // print_r($_POST);exit;
-  $usr=$_POST["txtmobile"];
-  $pwd=$_POST["txtpwd"];
+  $usr=$_POST["txtLogEmail"];
+  $pwd=$_POST["txtLogPwd"];
   $logobj=new MysqliDb(HOST,USER,PWD,DB);
   $logobj->where("cust_pwd",$pwd);
-  $logobj->where("cust_mobile",$usr,"LIKE");
+  $logobj->where("cust_email",$usr,"LIKE");
   $loginarray=$logobj->getOne("tbl_customers","cust_email,cust_name,cust_id,cust_mobile,cust_pwd");
   // echo $logobj->getLastQuery();exit;
   if($logobj->count >0)

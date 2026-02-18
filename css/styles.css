@@ -4672,7 +4672,7 @@ header.header-bg {
 .tf-field.style-1 .tf-input {
   padding: 25px 18px 6px;
   height: 50px;
-  border: 1px solid var(--line) !important;
+  border: 1px solid var(--line);
 }
 .tf-field.style-1 .tf-input:not(:placeholder-shown) ~ .tf-field-label, .tf-field.style-1 .tf-input:focus ~ .tf-field-label {
   top: 4px;

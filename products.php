@@ -91,7 +91,7 @@ $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm.sct_id,pm_n
                     </div>
                     <div class="card-product-info">
                         <a href="<?php echo ROOT ."product-detail/".$pdt["pm_id"] ?>" class="title link"><?php echo $pdt["pm_name"] ?></a>
-                        <span class="price current-price">₹ <?php echo $pdt["pd_price"]; ?></span>  
+                        <span class="price current-price">AED  <?php echo $pdt["pd_price"]; ?></span>  
                     </div>
                 </div>
                 
@@ -136,3 +136,6 @@ $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm.sct_id,pm_n
 
 <script src="<?php echo ROOT ?>js/nouislider.min.js"></script>
 <script src="<?php echo ROOT ?>js/shop.js"></script>
+<script>
+localStorage.removeItem("checkoutProduct")
+</script>

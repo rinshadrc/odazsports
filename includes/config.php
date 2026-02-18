@@ -6,7 +6,7 @@ ini_set( 'date.timezone', 'Asia/Calcutta' );
 ini_set("serialize_precision", -1);
 ini_set("precision", 14);
 define("ROOT",$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/odazsports/');
-define("HOST", "localhost");
+define("HOST", "127.0.0.1");
 define("USER","root");
 define("DB","odazsports");
 define("PWD","");
@@ -14,4 +14,4 @@ define("ADMINROOT",$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/od
 define("FILESIZE", "2048000");
 define("DIR", $_SERVER["DOCUMENT_ROOT"]."/odazsports/");
 define("IMGDIR",$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/odazsports/uploads/');
-define("SHIPPING",70);
+define("SHIPPING",0);

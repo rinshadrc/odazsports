@@ -33,7 +33,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
             <div class="container">
                 <div class="tf-breadcrumb-wrap d-flex justify-content-between flex-wrap align-items-center">
                     <div class="tf-breadcrumb-list">
-                        <a href="index.html" class="text">Home</a>
+                        <a href="<?php echo ROOT ?>" class="text">Home</a>
                         <i class="icon icon-arrow-right"></i>
                         <a href="#" class="text"><?php echo $pdtmstarr["ct_title"] ?></a>
                         <i class="icon icon-arrow-right"></i>
@@ -336,7 +336,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                     </div>
                                     <div class="card-product-info">
                                         <a href="<?php echo ROOT . "product-detail/" . $pdt["pm_id"] ?>" class="title link"><?php echo $pdt["pm_name"] ?></a>
-                                        <span class="price">₹ <?php echo $pdt["pd_price"] ?></span>
+                                        <span class="price">AED  <?php echo $pdt["pd_price"] ?></span>
                                         
                                     </div>
                                 </div>
@@ -371,6 +371,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
 <script>
     // var size, pdtid, rate, colorname, colorid, sizeid;
 // $(document).ready(function () {
+    localStorage.removeItem("checkoutProduct");
 
         renderProductDetail();
     function renderProductDetail(id) { 
@@ -396,8 +397,8 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
         sizeid = curentItem.size;
         colorname = clrnamear[0];
         colorid = clridarr[0];
-        $("#pdtprice").html("₹ " + price);
-        $("#pdtstrkprice").html("₹ " + curentItem.strikeprice.toFixed(2));
+        $("#pdtprice").html("AED  " + price);
+        $("#pdtstrkprice").html("AED  " + curentItem.strikeprice.toFixed(2));
         index = 0;
         activecls = "activecolor";
         
@@ -408,76 +409,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
         });
         $("#colorshow").html(clrnamear[0])
     }
-$(document).on("click", "#cartCheckout", function (e) {
-  e.preventDefault();
 
-  let products = JSON.parse(localStorage.getItem("cart") || "[]");
-  if (products.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
-
-  let adminPhone = "919745452364";
- 
-  let msg = "";
-  let total = 0;
-
-  products.forEach(p => {
-    if (!p.pmid) return;
-    let name = decodeURIComponent(p.name.replace(/\+/g, ' '));
-    msg += `• ${name} (${p.colorname}, ${p.size})\n`;
-    msg += `Qty: ${p.qty} × ₹${p.rate}\n\n`;
-    total += parseFloat(p.rate) * parseInt(p.qty);
-  });
-
-  msg += "-------------------------\n";
-  msg += `Total: ₹${total.toFixed(2)}`;
-
-  let encodedMsg = encodeURIComponent(msg);
-
-  let walink = "https://web.whatsapp.com/send";
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    walink = "whatsapp://send";
-  }
-
-  let waUrl = `${walink}?phone=${adminPhone}&text=${encodedMsg}`;
-
-  window.open(waUrl, "_blank");
-
-  setTimeout(() => {
-    localStorage.removeItem("cart");
-    location.reload();
-  }, 1000);
-});
-
-    $(document).on("click", "#btnBuynowcart", function(atg) {
-        let qty = parseInt($("#pdtquantity").val()) || 1;
-  let adminPhone = "919745452364";
-  let msg = "";
-  let total = 0;
-
-    let name = decodeURIComponent(pdtMaster.pm_name.replace(/\+/g, ' '));
-    msg += `• ${name} (${colorname}, ${size})\n`;
-    msg += `Qty: ${qty} × ₹${rate}\n\n`;
-    total += parseFloat(rate) * parseInt(qty);
-
-
-  msg += "-------------------------\n";
-  msg += `Total: ₹${total.toFixed(2)}`;
-
-  let walink = "https://web.whatsapp.com/send";
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    walink = "whatsapp://send";
-  }
-
-  let waUrl = `${walink}?phone=${adminPhone}&text=${encodedMsg}`;
-  window.open(waUrl, "_blank");
-
-  setTimeout(() => {
-    location.reload();
-  }, 1000);
-        
-    });
 $(document).on("click", ".pdtSize", function(atg) { 
         atg.preventDefault();
         myid = $(this).data("id");
@@ -527,6 +459,29 @@ $(document).on("click", ".pdtSize", function(atg) {
             scrollTop: 0
         }, "slow");
         $("#shoppingCart").modal("show")
+    });
+    $(document).on("click", "#btnBuynowcart", function(e) {
+        e.preventDefault();
+        let isLogged = <?php echo json_encode(!empty($_SESSION['CUST'])); ?>;
+        if (!isLogged) {
+            $("#login").modal("show");
+        } else {
+            let qty = parseInt($("#pdtquantity").val()) || 1;
+            let product = {
+                pmid: pdtMaster.pm_id,
+                name: pdtMaster.pm_name,
+                img: pdtMaster.pm_image,
+                rate: rate, 
+                qty: qty,
+                size: size,
+                pdid: pdtid,
+                sizeid: sizeid,
+                colorname: colorname,
+                colorid: colorid
+            };
+            localStorage.setItem("checkoutProduct", JSON.stringify([product]));
+            window.location.href = "<?php echo ROOT ?>checkout";
+        }
     });
 // });
 

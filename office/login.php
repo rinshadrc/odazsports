@@ -52,7 +52,7 @@ include("../includes/MysqliDb.php");
 
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?php echo ROOT ?>adminassets/img/favicon.png" />
+  <link rel="icon" type="image/x-icon" href="<?php echo ROOT ?>images/ico.jpeg" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">

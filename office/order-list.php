@@ -59,7 +59,7 @@ $sts=$_GET["sts"]?:null;
                                 <td><?php echo $itm["fname"]." ".$itm["lname"]."<br>".$itm["mobile"]; ?></td>
                                 <td><?php echo $itm["state"]."<br>".$itm["postcode"]; ?></td>
                                 <td><?php echo date("j M Y", strtotime($itm["om_date"])); ?></td>
-                                <!-- <td><?php echo "₹".$itm["om_total"] ?></td> -->
+                                <!-- <td><?php echo "AED ".$itm["om_total"] ?></td> -->
                                 <td><div class="badge <?php echo $status[$itm["om_status"]]["class"]; ?> rounded-pill"><?php echo $status[$itm["om_status"]]["label"]; ?></div></td>
                                 <td>
                                 <a href="#" class="btn btn-sm btn-outline-primary me-3 waves-effect openModal" data-id="<?php echo $itm["om_id"] ?>"><i class="tf-icons ri-sticky-note-line ri-14px me-1"></i>Details</a>
