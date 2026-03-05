@@ -19,8 +19,7 @@ $EMAILOBJ->Debugoutput = 'html';
 
 //Set the hostname of the mail server
 $EMAILOBJ->Host = 'smtp.gmail.com';
-// use
-// $EMAILOBJ->Host = gethostbyname('smtp.gmail.com');
+
 // if your network does not support SMTP over IPv6
 
 //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
@@ -33,12 +32,19 @@ $EMAILOBJ->SMTPSecure = 'tls';
 $EMAILOBJ->SMTPAuth = true;
 
 //Username to use for SMTP authentication - use full email address for gmail
-$EMAILOBJ->Username = "mailtomovieclicks@gmail.com";
+$EMAILOBJ->Username = "odazsports@gmail.com";
 //Password to use for SMTP authentication
-// $EMAILOBJ->Password = "Pwd4movieclick";--->email password
-$EMAILOBJ->Password = "ishdclkyjyxldhww "; //app pwd
+$EMAILOBJ->Password = "fapzwatcamxgvxjk"; //app pwd
 
 
 //Set who the message is to be sent from
-$EMAILOBJ->setFrom('mailtomovieclicks@gmail.com', "Redcherry Cinemas");
+// $EMAILOBJ->setFrom('odazsports@gmail.com', "Odaz Sports");
+// $EMAILOBJ->Subject = 'test mail from odaz';
+// $content="<!DOCTYPE html><html><head><title>Show closing details of "."redesigns"."</title></head><body><h1>test mail odaz sports</h1>/body></html>";
+
+// $mailfoot="</body></html>";
+// $EMAILOBJ->SMTPDebug=2;
+// $EMAILOBJ->addAddress("rinshadredcherry@gmail.com", "rinshad");
+// $EMAILOBJ->msgHTML($content);
+// $EMAILOBJ->send();
 

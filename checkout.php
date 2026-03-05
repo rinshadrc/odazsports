@@ -22,48 +22,64 @@ $custar = $cusobj->getOne("tbl_customers", "cust_id,cust_name,cust_mobile,cust_e
             <div class="container">
                 <div class="tf-page-cart-wrap layout-2">
                     <div class="tf-page-cart-item">
-                        <h5 class="fw-5 mb_20">Billing details</h5>
+                        <h5 class="fw-5 mb_20">Delivery Address</h5>
                         <form id="formProceed">
                                 <input type="hidden" name="action" value="proceedPayment">
-                            <div class="box grid-2">
-                                <fieldset class="fieldset">
+                            <div class="box row" style="padding-bottom: 15px;">
+                                <fieldset class="fieldset col-md-6">
                                     <label for="first-name">First Name</label>
                                     <input type="text" id="first-name" placeholder="" name="fname" class="required" value="<?php echo $custar["cust_name"]?>">
                                 </fieldset>
-                                <fieldset class="fieldset">
+                                <fieldset class="fieldset col-md-6">
                                     <label for="last-name">Last Name</label>
                                     <input type="text" id="last-name" name="lname" class="">
                                 </fieldset>
                             </div>
-                            
-                            <fieldset class="box fieldset">
-                                <label for="country">Country/Region</label>
+                              <div class="box row" style="padding-bottom: 15px;">
+                            <fieldset class="box fieldset col-md-6">
+                                <label for="state">Emirates</label>
                                 <div class="select-custom">
-                                    <select class="tf-select w-100" id="country" name="state" data-default="">
-                                        <option value="United Arab Emirates">United Arab Emirates</option>
-                                    </select>
+                                  <select class="tf-select w-100" id="state" name="state">
+                                    <option value="Abu Dhabi" <?= ($custar["state"] == "Abu Dhabi") ? "selected" : "" ?>>Abu Dhabi</option>
+                                    <option value="Ajman" <?= ($custar["state"] == "Ajman") ? "selected" : "" ?>>Ajman</option>
+                                    <option value="Dubai" <?= ($custar["state"] == "Dubai") ? "selected" : "" ?>>Dubai</option>
+                                    <option value="Fujairah" <?= ($custar["state"] == "Fujairah") ? "selected" : "" ?>>Fujairah</option>
+                                    <option value="Ras al-Khaimah" <?= ($custar["state"] == "Ras al-Khaimah") ? "selected" : "" ?>>Ras al-Khaimah</option>
+                                    <option value="Umm al-Quwain" <?= ($custar["state"] == "Umm al-Quwain") ? "selected" : "" ?>>Umm al-Quwain</option>
+                                  </select>
                                 </div>
                             </fieldset>
-                            <fieldset class="box fieldset">
+                            <fieldset class="box fieldset col-md-6">
                                 <label for="city">Town/City</label>
                                 <input type="text" id="city" name="city" class="required" value="<?php echo $custar["city"]?>">
                             </fieldset>
-                             <fieldset class="box fieldset">
+                             </div>
+                             <fieldset class="box fieldset" style="padding-bottom: 15px;">
                                 <label for="apartment">Apartment</label>
                                 <input type="text" id="apartment" name="apartment" class="required" value="<?php echo $custar["apartment"]?>">
                             </fieldset>
-                            <fieldset class="box fieldset">
+                            <fieldset class="box fieldset" style="padding-bottom: 15px;">
                                 <label for="address">Address</label>
                                 <input type="text" id="address" name="address" class="required" value="<?php echo $custar["address"]?>">
                             </fieldset>
-                            <fieldset class="box fieldset">
-                                <label for="phone">Phone Number</label>
-                                <input type="number" id="txtMobile" name="mobile" class="required numeric" value="<?php echo $custar["cust_mobile"]?>">
-                            </fieldset>
-                            <fieldset class="box fieldset">
+                            
+                            <div class="box row" style="padding-bottom: 15px;">
+                            
+                            <fieldset class="box fieldset col-md-6">
+    <label for="phone">Phone Number</label>
+    <div class="input-group">
+        <span class="input-group-text">+971</span>
+        <input type="text" id="txtMobile" name="mobile" class="form-control required numeric"
+            value="<?php echo $custar["cust_mobile"]?>">
+    </div>
+</fieldset>
+                            <fieldset class="box fieldset col-md-6">
                                 <label for="email">Email</label>
                                 <input type="email" id="email" name="email" class="required" value="<?php echo $custar["cust_email"]?>">
                             </fieldset>
+                            
+                            
+                            </div>
                             <!-- <fieldset class="box fieldset">
                                 <label for="note">Order notes (optional)</label>
                                 <textarea name="note" id="note" name="notes"></textarea>
@@ -76,14 +92,24 @@ $custar = $cusobj->getOne("tbl_customers", "cust_id,cust_name,cust_mobile,cust_e
                                 <ul class="wrap-checkout-product" id="cartContainer">
                                   
                                 </ul>
-                                <div class="coupon-box">
-                                    <input type="text" placeholder="Discount code">
-                                    <a href="#"
-                                        class="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Apply</a>
+                                <!-- <div class="coupon-box">
+                                   <input type="text" placeholder="Discount code">
+                                   <a href="#"
+                                       class="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Apply</a>
+                                </div> -->
+                                  <div class="d-flex justify-content-between ">
+                                    <p>Shipping</p>
+                                    <p id="shipping"></p>
                                 </div>
-                                <div class="d-flex justify-content-between line pb_20">
+
+                                <div class="d-flex justify-content-between ">
                                     <h6 class="fw-5">Total</h6>
                                     <h6 class="total fw-5" id="grandTotal"></h6>
+                                </div>
+
+                                <div class="pb_20 line">
+                                  <p>Including AED <span id="taxAmt"></span> in taxes</p>
+
                                 </div>
                                 <div class="wd-check-payment">
                                     <div class="fieldset-radio mb_20">
@@ -99,48 +125,34 @@ $custar = $cusobj->getOne("tbl_customers", "cust_id,cust_name,cust_mobile,cust_e
                                         support your experience throughout this website, and for other purposes
                                         described in our <a href="<?php echo ROOT ?>privacy-policy"
                                             class="text-decoration-underline">privacy policy</a>.</p>
-                                    <div class="box-checkbox fieldset-radio mb_20">
-                                        <input type="checkbox" id="check-agree" class="tf-check">
-                                        <label for="check-agree" class="text_black-2">I have read and agree to the website <a href="<?php echo ROOT ?>terms" class="text-decoration-underline">terms and conditions</a>.</label>
-                                    </div>
+                                    <!--<div class="box-checkbox fieldset-radio mb_20">-->
+                                    <!--    <input type="checkbox" id="check-agree" class="tf-check">-->
+                                    <!--    <label for="check-agree" class="text_black-2">I have read and agree to the website <a href="<?php echo ROOT ?>terms" class="text-decoration-underline">terms and conditions</a>.</label>-->
+                                    <!--</div>-->
                                 </div>
                                 <button type="submit" id="btnproceed" class="tf-btn radius-3 btn-fill btn-icon animate-hover-btn justify-content-center">Place order</button>
-                                <p id="errMsg" class="m-3 text-danger"></p>
+                              
                         </form>
-                        <!-- <div id="buttonPaymentListContainer"></div> -->
-
+                        <div id="buttonPaymentListContainer"></div>
+  <p id="errMsg" class="m-3 text-danger"></p>
                     </div>
                 </div>
             </div>
         </section>
         <!-- page-cart -->
-
-<div class="modal fade" id="paymentModal"
-     tabindex="-1"
-     data-bs-backdrop="static"
-     data-bs-keyboard="false">
-
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title">Complete Payment</h5>
-        <!-- <button type="button" class="btn-close btnCancelPayment"></button> -->
-      </div>
-
-      <div class="modal-body">
-        <div id="buttonPaymentListContainer">Processing...</div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button"
-                class="btn btn-outline-danger" id="btnCancelPayment">
-          Cancel Payment
-        </button>
-      </div>
-
-    </div>
-  </div>
+<div id="loaderdiv" style="top: 0px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background-color: #5d5d5d7d;
+  z-index: 10000000000000000000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0px;"> 
+<img src="<?php echo ROOT ?>images/logo-bk.png" alt="logo" class="logo" style="width: 150px;">
 </div>
 
 
@@ -157,6 +169,7 @@ $custar = $cusobj->getOne("tbl_customers", "cust_id,cust_name,cust_mobile,cust_e
 let products = []; 
 let isCart=false;
 var master;
+$("#loaderdiv").hide();
 if (localStorage.getItem("checkoutProduct")) {
     let parsed = JSON.parse(localStorage.getItem("checkoutProduct"));
     products = Array.isArray(parsed) ? parsed : [parsed];  
@@ -164,9 +177,10 @@ if (localStorage.getItem("checkoutProduct")) {
     products = JSON.parse(localStorage.getItem("cart"));
     isCart=true;
 }
-$("#cartContainer,#grandTotal").html(""); 
+$("#cartContainer,#grandTotal,#taxAmt").html("");  
 subtotal = 0;
-shippingfee=0
+shippingfee=0;
+gtotal = 0;
 $.each(products, function (key, p) {
         let rowTotal = p.rate * p.qty;
         subtotal += rowTotal;
@@ -187,6 +201,16 @@ $.each(products, function (key, p) {
         
         $("#cartContainer").append(html);
     });
+    let gstRate = 5; // GST 5%
+let gstAmount = (subtotal * gstRate) / (100 + gstRate);
+$("#taxAmt").html(gstAmount.toFixed(2));   
+if (subtotal >= 200) {
+shippingfee=0;
+$("#shipping").html("FREE"); // free shipping above ₹499
+} else {
+    shippingfee=parseFloat("<?php echo SHIPPING ?>");
+  $("#shipping").html("AED " + shippingfee.toFixed(2));
+}
 gtotal=subtotal+shippingfee;
 $("#grandTotal").html("AED " + gtotal.toFixed(2)); // final price (already inclusive)
 
@@ -263,9 +287,12 @@ async function launchCheckout(captureContext) {
         paymentSelection: "#buttonPaymentListContainer"
       }
     });
+    $("#loaderdiv").show();
     const result = await up.complete(tt);
-    const decoded=decodeJwt(result)
+    const decoded=decodeJwt(result);
+    console.log(decoded)
     if (decoded.status === "AUTHORIZED" && decoded.outcome === "AUTHORIZED") {
+    // $("#loaderdiv").show();
     confirmBooking(decoded.id);
 } else {
        window.location.href = "<?php echo ROOT ?>payment-failed";
@@ -274,7 +301,7 @@ async function launchCheckout(captureContext) {
     console.error("Unified Checkout error:", err);
     window.location.href = "<?php echo ROOT ?>payment-failed";
   }
-}
+} 
 
 function decodeJwt(token) {
   const payload = token.split('.')[1];
@@ -282,12 +309,12 @@ function decodeJwt(token) {
   return JSON.parse(atob(base64));
 }
 function loadCyberSource(clientLibrary, integrity) {
-  if (document.querySelector(`script[src="${clientLibrary}"]`)) {
-    $('#paymentModal').modal('show');
-    return Promise.resolve();
-  }
+  // if (document.querySelector(`script[src="${clientLibrary}"]`)) {
+  //   $('#paymentModal').modal('show');
+  //   return Promise.resolve();
+  // }
 
-  $('#paymentModal').modal('show');
+  // $('#paymentModal').modal('show');
 
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");

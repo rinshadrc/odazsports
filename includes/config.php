@@ -14,4 +14,5 @@ define("ADMINROOT",$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/od
 define("FILESIZE", "2048000");
 define("DIR", $_SERVER["DOCUMENT_ROOT"]."/odazsports/");
 define("IMGDIR",$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/odazsports/uploads/');
-define("SHIPPING",0);
+define("SHIPPING",20);
+$SIZECHART=Array("Men Sizechart"=>"sizechart/men.jpg","Women Sizechart"=>"sizechart/women.jpg","Girl Sizechart"=>"sizechart/girl.jpg","Boy Sizechart"=>"sizechart/boy.jpg");

@@ -2,7 +2,7 @@
 include("template.php");
 head("Odaz Sports | List of Orders");
 main_nav();
-ini_set("display_errors",0);
+ini_set("display_errors",1);
 $sts=$_GET["sts"]?:null;
 ?>
 <!-- Vendors CSS -->
@@ -31,7 +31,7 @@ $sts=$_GET["sts"]?:null;
                 $orderobj->where("om_status", -1, "<>");
                 }
                 $orderobj->orderBy("om_id", "DESC");
-                $orderarr = $orderobj->get("tbl_order_master", null, "om_id,fname,lname,mobile,postcode,address,city,landmark,state,om_total,om_date,om_status,om_num");
+                $orderarr = $orderobj->get("tbl_order_master", null, "om_id,fname,lname,mobile,postcode,address,city,apartment,state,om_total,om_date,om_status,om_num");
                 //echo $orderobj->getLastQuery();
                 ?>
                 <table class="tblOrders table">
@@ -57,7 +57,7 @@ $sts=$_GET["sts"]?:null;
                                 <td><?php echo $key + 1; ?></td>
                                 <td><?php echo $itm["om_num"]; ?></td>
                                 <td><?php echo $itm["fname"]." ".$itm["lname"]."<br>".$itm["mobile"]; ?></td>
-                                <td><?php echo $itm["state"]."<br>".$itm["postcode"]; ?></td>
+                                <td><?php echo $itm["city"]."<br>".$itm["address"]; ?></td>
                                 <td><?php echo date("j M Y", strtotime($itm["om_date"])); ?></td>
                                 <!-- <td><?php echo "AED ".$itm["om_total"] ?></td> -->
                                 <td><div class="badge <?php echo $status[$itm["om_status"]]["class"]; ?> rounded-pill"><?php echo $status[$itm["om_status"]]["label"]; ?></div></td>
@@ -233,7 +233,7 @@ $sts=$_GET["sts"]?:null;
                 $("#custDetails").html(
                   (orderdetails.master.mobile   ? "<strong>Mobile:</strong> " + orderdetails.master.mobile + "<br>" : "") +
                   (orderdetails.master.address  ? orderdetails.master.address   + "<br>" : "") +
-                  (orderdetails.master.landmark ? orderdetails.master.landmark  + "<br>" : "") +
+                  (orderdetails.master.apartment ? orderdetails.master.apartment  + "<br>" : "") +
                   (orderdetails.master.city     ? orderdetails.master.city      + "<br>" : "") +
                   (orderdetails.master.state    ? orderdetails.master.state     + "<br>" : "") +
                   (orderdetails.master.postcode ? orderdetails.master.postcode  : "")

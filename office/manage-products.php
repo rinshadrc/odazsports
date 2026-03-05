@@ -5,7 +5,7 @@ ini_set("display_errors",0);
 $pckobj=new MysqliDb(HOST,USER,PWD,DB);
 if($pid){
    $pckobj->where("pm_id",$pid);
-   $product=$pckobj->getOne("tbl_product_master","pm_id,pm_name,pm_desc,pm_code,ct_id,sct_id,is_featured,offer_tag,pm_image");
+   $product=$pckobj->getOne("tbl_product_master","pm_id,pm_name,pm_desc,pm_code,ct_id,sct_id,is_featured,offer_tag,pm_image,size_chart");
    //echo $pckobj->getLastQuery();exit;
 }
 head($pid ?"Update Products":"Create Products");
@@ -72,19 +72,29 @@ main_nav();
               </div>
               <div class="row">
                 
-                <div class="col-xl-4">
+                <div class="col-xl-3">
                   <div class="form-floating form-floating-outline mb-6">
                     <input class="form-control" id="txtTag" name="txtTag" placeholder="Offer tag on Product" type="text" value="<?php echo $product["offer_tag"]?>" />
                     <label for="txtTag">offer Tag</label>
                   </div>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-3">
                   <div class="form-floating form-floating-outline mb-6">
                     <input class="form-control" id="txtCode" name="txtCode" placeholder="Product Code" type="text" value="<?php echo $product["pm_code"]?>"/>
                     <label for="txtCode">Product Code</label>
                   </div>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-3">
+                       <div class="form-floating form-floating-outline mb-6">
+                    <select class="form-select" name="sizechart" id="sizechart">
+                      <?php foreach(array_keys($SIZECHART) as $sizes){?>
+                      <option value="<?php echo $sizes ?>" <?php if($product["size_chart"] == $sizes) echo "selected";?>><?php echo $sizes  ?></option>
+                      <?php } ?>
+                    </select>
+                    <label for="sizechart">Size Chart</label>
+                  </div>
+                </div>
+                <div class="col-xl-3">
                       <label class="switch">
                           <input type="checkbox" class="switch-input" value="1" <?php echo $product["is_featured"]==1?"checked='checked'":""?>  id="chkFeatured" name="chkFeatured" />
                           <span class="switch-toggle-slider"><span class="switch-on"></span><span class="switch-off"></span>
@@ -178,6 +188,7 @@ main_nav();
                         <th style='width:25%'>Colour</th>
                         <th>Price</th>
                         <th>Strike Price</th>
+                        <th>Stock</th>
                         <th>Tools</th>
                       </tr>
                     </thead>
@@ -215,6 +226,7 @@ main_nav();
                         </td>
                         <td><input type="text" class="form-control numeric required" name="txtPrice" id="txtPrice" placeholder="Price"></td>
                         <td><input type="text" class="form-control numeric required" name="txtStrikePrice" id="txtStrikePrice" placeholder="Strike Price"></td>
+                        <td><input type="text" class="form-control numeric required" name="txtStock" id="txtStock" placeholder="Product Stock"></td>
                         <td>
                           <a class="btn btn-danger d-none" id="btnCancel">Cancel</a>
                         <button class="btn btn-primary" id="btnSaveDetail">Save</button></td>
@@ -229,7 +241,7 @@ main_nav();
                         $variantobj->where("pd.pd_status",0);
                         $variantobj->join("tbl_colours cl","JSON_CONTAINS(pd.pd_color,cl.cl_id)", "LEFT");
                         $variantobj->join("tbl_sizes sc","pd.sz_id=sc.sz_id");
-                        $dtlarr=$variantobj->get("tbl_product_detail pd",null,"pd.pd_id,pd.pm_id,pd_price,sz_title,pd_strikeprice,pd.sz_id,pd_color,sc.sz_code,GROUP_CONCAT(DISTINCT cl.cl_name) AS clname");
+                        $dtlarr=$variantobj->get("tbl_product_detail pd",null,"pd.pd_id,pd.pm_id,pd_price,sz_title,pd_strikeprice,pd.sz_id,pd_color,sc.sz_code,GROUP_CONCAT(DISTINCT cl.cl_name) AS clname,pd_stock");
                         foreach ($dtlarr as $key=> $dt){
                       ?>
                       <tr>
@@ -237,7 +249,8 @@ main_nav();
                         <td><?php echo $dt["clname"] ?></td>
                         <td><?php echo $dt["pd_price"]?></td>
                         <td><?php echo $dt["pd_strikeprice"]?></td>
-                        <td><button type="button" class='btn btn-sm btn-outline-primary waves-effect btnEditDetail' data-id="<?php echo $dt["pd_id"] ?>" data-price="<?php echo $dt["pd_price"] ?>" data-sprice="<?php echo $dt["pd_strikeprice"] ?>" data-color="<?php echo $dt["pd_color"] ?>" data-size="<?php echo $dt["sz_id"] ?>" ><i class="ri-edit-box-line"></i></button>
+                        <td><?php echo $dt["pd_stock"]?></td>
+                        <td><button type="button" class='btn btn-sm btn-outline-primary waves-effect btnEditDetail' data-id="<?php echo $dt["pd_id"] ?>" data-price="<?php echo $dt["pd_price"] ?>" data-sprice="<?php echo $dt["pd_strikeprice"] ?>" data-color="<?php echo $dt["pd_color"] ?>" data-size="<?php echo $dt["sz_id"] ?>" data-stock="<?php echo $dt["pd_stock"] ?>" ><i class="ri-edit-box-line"></i></button>
                       <button type="button" class='btn btn-sm btn-outline-danger waves-effect openDelModal' data-title="Product Detail" data-type="productdetail" data-delid="<?php echo $dt["pd_id"] ?>"><i class="ri-delete-bin-line"></i></button>
                       </td>
                       </tr>
@@ -438,6 +451,7 @@ initCropit();
 			$("#selSizes").attr("disabled", true);
 			$("#txtPrice").val($(this).data("price"));
 			$("#txtStrikePrice").val($(this).data("sprice"));
+			$("#txtStock").val($(this).data("stock"));
       $("#selColour,#selSizes").select2({
        width: "100%"
       });
@@ -499,7 +513,7 @@ $(this).cropit('imageSrc', src);
 
 	$(document).on("click", "#btnCancel", function() {
 			$("#btnCancel").addClass("d-none");
-			$("#pdid,#selColour,#selSizes,#txtPrice,#txtStrikePrice").val("");
+			$("#pdid,#selColour,#selSizes,#txtPrice,#txtStrikePrice,#txtStock").val("");
 			 $("#selSizes").attr("disabled", false);
        $("#selColour,#selSizes").select2({
        width: "100%"

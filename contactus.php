@@ -9,8 +9,7 @@ head("Contact Us", 0);
             style="background-color: #fbae16;background-image: url('<?php echo ROOT?>images/bg.png');background-size: cover;background-repeat: no-repeat;">
             <div class="container-full">
                 <div class="heading text-center">Contact Us</div>
-                <p class="text-center text-2 text_black-2 mt_5">Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. </p>
+                <p class="text-center text-2 text_black-2 mt_5">We’re here to help—reach out with any questions or support needs. </p>
             </div>
         </div>
         <!-- /page-title -->

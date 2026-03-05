@@ -24,7 +24,7 @@ switch ($action):
         {
             $recip.=substr($str,rand(0,31),1);
         }
-        $recip="CC".$recip;
+        $recip="OS".$recip;
         // Insert into order master
         $orderData = [
             "fname"    => $_POST["fname"],
@@ -35,6 +35,7 @@ switch ($action):
             "email"  => $_POST["email"],
             "city"     => $_POST["city"],
             "apartment" => $_POST["apartment"],
+            "state" => $_POST["state"],
             "om_num"    => $recip,
             "cust_id"  => $_SESSION["CUST"] ?: null,
             "om_status" => -1
@@ -53,7 +54,7 @@ switch ($action):
             $query = "INSERT INTO tbl_order_detail (om_id, pm_id, pd_id, sz_id, cl_id, qty, price, od_json, od_status) VALUES " . implode(",", $values);
             $db->rawQuery($query);
         }
-        if($totalprice <= 499){
+        if($totalprice <= 200){
             $totalprice += SHIPPING;
         }
         
@@ -463,7 +464,7 @@ case "orderDetails":
     $omid=$_POST['omid'];
     $odobj=new MysqliDb(HOST,USER,PWD,DB);
     $odobj->where("om_id",$omid);
-    $out["master"]=$odobj->getOne("tbl_order_master","mobile,postcode,address,city,landmark,state,om_status,om_total,om_num");
+    $out["master"]=$odobj->getOne("tbl_order_master","mobile,postcode,address,city,apartment,state,om_status,om_total,om_num");
 
     $odobj->where("om_id",$omid);
     $orderdtlarr=$odobj->get("tbl_order_detail",null,"qty,(qty*price) as price,od_json,od_status");

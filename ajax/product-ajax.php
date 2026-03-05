@@ -18,6 +18,7 @@ case 'addPdtMaster':
 	$pdtdesc=$_POST["txtpdtdesc"];
 	$pdtcode=$_POST["txtCode"];
 	$offertag=$_POST["txtTag"];
+	$sizechart=$_POST["sizechart"];
 	$cagry=$_POST['selCatgry'];
 	$subcagry=$_POST['selSubCatgry'];
 	$featured=$_POST["chkFeatured"]?:0;
@@ -41,7 +42,7 @@ case 'addPdtMaster':
 	}
 	$pdtobj=new MysqliDb(HOST,USER,PWD,DB);
 	$pdtobj->startTransaction();
-	$pdtmastarr=Array("pm_name"=>$pdtnm,"pm_desc"=>$pdtdesc,"pm_code"=>$pdtcode,"offer_tag"=>$offertag,"ct_id"=>$cagry,"sct_id"=>$subcagry,"is_featured"=>$featured,"pm_image"=>$file);
+	$pdtmastarr=Array("pm_name"=>$pdtnm,"pm_desc"=>$pdtdesc,"pm_code"=>$pdtcode,"offer_tag"=>$offertag,"ct_id"=>$cagry,"sct_id"=>$subcagry,"is_featured"=>$featured,"pm_image"=>$file,"size_chart"=>$sizechart);
 	
 	if($pmid){
 		$pdtobj->where("pm_id",$pmid);
@@ -111,17 +112,18 @@ case 'addPdtDetail':
 	$sizesarr=$_POST["selSizes"];
 	$price=$_POST["txtPrice"];
 	$strikeprice=$_POST["txtStrikePrice"]?:null;
+	$stock=$_POST["txtStock"]?:0;
 	$pdtobj=new MysqliDb(HOST,USER,PWD,DB);
 	$pdtobj->startTransaction();
 	if($pdid){
-		$pdtdtlarr=Array("pd_price"=>$price,"pd_strikeprice"=>$strikeprice,"pd_color"=>$colorjsn,"sz_id"=>$sizesarr[0]);
+		$pdtdtlarr=Array("pd_price"=>$price,"pd_strikeprice"=>$strikeprice,"pd_color"=>$colorjsn,"sz_id"=>$sizesarr[0],"pd_stock"=>$stock);
 		$pdtobj->where("pd_id",$pdid);	
 		$pdtobj->update("tbl_product_detail",$pdtdtlarr);
 	}else{
 		foreach($sizesarr as $key => $sz){
-			$dtlarr[]="($pmid,$price,$strikeprice,'$colorjsn',$sz)";
+			$dtlarr[]="($pmid,$price,$strikeprice,'$colorjsn',$sz,$stock)";
 		}
-		$dtlsql="INSERT INTO tbl_product_detail (pm_id,pd_price,pd_strikeprice,pd_color,sz_id) VALUES ".implode(', ', $dtlarr);
+		$dtlsql="INSERT INTO tbl_product_detail (pm_id,pd_price,pd_strikeprice,pd_color,sz_id,pd_stock) VALUES ".implode(', ', $dtlarr);
 		$pdtobj->rawQuery($dtlsql);
 	}
 	if(!$pdtobj->getLastError()){

@@ -94,19 +94,20 @@ else
 echo json_encode($out);
 break;
 case "updateCustomer":
-//print_r($_POST);exit;
+// print_r($_POST);exit;
 $name=$_POST["name"];
 $phone=$_POST["phone"];
 $email=$_POST["email"];
 $city=$_POST["city"];
 $state=$_POST["state"];
 $postcode=$_POST["postcode"];
-$landmark=$_POST["landmark"];
+$landmark=$_POST["apartment"];
 $address=$_POST["address"];
-$custData=array("cust_name"=>$name,"cust_mobile"=>$phone,"cust_email"=>$email,"postcode"=>$postcode,"landmark"=>$landmark,"state"=>$state,"city"=>$city,"address"=>$address);
+$custData=array("cust_name"=>$name,"cust_mobile"=>$phone,"cust_email"=>$email,"postcode"=>$postcode,"apartment"=>$landmark,"state"=>$state,"city"=>$city,"address"=>$address);
 $cusobj=new MysqliDb(HOST,USER,PWD,DB);
 $cusobj->where("cust_id",$_SESSION["CUST"]);
 $cusobj->update("tbl_customers",$custData);
+// echo $cusobj->getLastQuery();exit;
 if(!$cusobj->getLastError()){
 $out["status"]="done";
 }else{

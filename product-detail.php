@@ -8,7 +8,7 @@ $pdtobj->where("pm_id", $pid);
 $pdtobj->where("pm_status", 0);
 $pdtobj->join("tbl_sub_category sct", "pm.sct_id=sct.sct_id");
 $pdtobj->join("tbl_category ct", "pm.ct_id=ct.ct_id");
-$pdtmstarr = $pdtobj->getOne("tbl_product_master pm", "pm_id,pm_name,pm_desc,pm_code,pm_note,pm.sct_id,pm_status,is_featured,offer_tag,pm_image,ct.ct_title,sct.sct_title");
+$pdtmstarr = $pdtobj->getOne("tbl_product_master pm", "pm_id,pm_name,pm_desc,pm_code,pm_note,pm.sct_id,pm_status,is_featured,offer_tag,pm_image,ct.ct_title,sct.sct_title,size_chart");
 $pdtobj->where("pm_id", $pid);
 $pdtimgs = $pdtobj->get("tbl_images", null, "img_name");
 // print_r($pdtimgs);exit;
@@ -131,8 +131,9 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                                 <div class="variant-picker-label">
                                                     Size: <span class="fw-6 variant-picker-label-value" id="sizeshow"></span>
                                                 </div>
-                                                <a href="#find_size" data-bs-toggle="modal" class="find-size fw-6">Find
-                                                    your size</a>
+                                                <?php if($pdtmstarr["size_chart"]){?>
+                                                <a href="#find_size" data-bs-toggle="modal" class="find-size fw-6">Find your size</a>
+                                                <?php } ?>
                                             </div>
                                             <div class="variant-picker-values" id="sizewrpr"></div>
                                         </div>
@@ -356,6 +357,24 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
         <?php } ?>
         <!-- /product -->
 
+        <!-- modal find_size -->
+    <div class="modal fade modalDemo tf-product-modal popup-findsize" id="find_size">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="header">
+                    <div class="demo-title">Size guide</div>
+                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                </div>
+                <div class="tf-rte">
+                    <div class="tf-table-res-df">
+                        <img src="<?php echo ROOT.$SIZECHART[$pdtmstarr["size_chart"]] ?>" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <!-- /modal find_size -->
+
        <?php footer();?>
 </div>
 
@@ -464,7 +483,7 @@ $(document).on("click", ".pdtSize", function(atg) {
         e.preventDefault();
         let isLogged = <?php echo json_encode(!empty($_SESSION['CUST'])); ?>;
         if (!isLogged) {
-            $("#login").modal("show");
+            $("#login").modal("show"); 
         } else {
             let qty = parseInt($("#pdtquantity").val()) || 1;
             let product = {
