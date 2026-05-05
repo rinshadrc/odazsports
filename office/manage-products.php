@@ -11,6 +11,18 @@ if($pid){
 head($pid ?"Update Products":"Create Products");
 main_nav();
 ?>
+<!-- In your <head>, add this -->
+<style>
+.ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; border-color: #dee2e6; background: #f8f9fa; }
+.ql-container.ql-snow { border-radius: 0 0 8px 8px; border-color: #dee2e6; min-height: 100px; font-size: 15px; }
+.ql-container.ql-snow .ql-editor { min-height: 100px; }
+/* Match your form-floating label style */
+.desc-label { font-size: 13px; color: #6c757d; margin-bottom: 6px; display: block; font-weight: 500; }
+</style>
+
+<!-- In your <head> or before </body>, add Quill CDN -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo ROOT ?>plugins/select2/select2.css">
 <link rel="stylesheet" type="text/css" href="<?php echo ROOT ?>plugins/cropit/cropit.css">
 <div class="content-wrapper">
@@ -104,11 +116,20 @@ main_nav();
                 </div>
               </div>
               <div class="row mt-5">
-                <div class="col-xl-6">
+                <!-- <div class="col-xl-6">
                   <div class="form-floating form-floating-outline mb-6">
                     <textarea class="form-control h-px-100" id="txtpdtdesc" name="txtpdtdesc" placeholder="Discription for Product" ><?php echo $product["pm_desc"]?></textarea>
                     <label for="txtpdtdesc">Description</label>
                   </div>
+                </div> -->
+                <div class="col-xl-6">
+        <div class="mb-6">
+            <label class="desc-label">Description</label>
+            <!-- Hidden input that holds HTML value for form submission -->
+            <input type="hidden" id="txtpdtdesc" name="txtpdtdesc">
+            <!-- Quill editor container -->
+            <div id="quill-editor"></div>
+        </div>
                 </div>
                 <div class="col-xl-2"></div>
                 
@@ -519,9 +540,33 @@ $(this).cropit('imageSrc', src);
        width: "100%"
       });
 		});
+ // Initialize Quill
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        placeholder: 'Description for Product',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'header': [2, 3, false] }],
+                ['clean']
+            ]
+        }
+    });
 
+    // Pre-fill existing product description (from PHP)
+    var existingContent = <?php echo json_encode($product["pm_desc"] ?? ''); ?>;
+    if (existingContent) {
+        quill.clipboard.dangerouslyPasteHTML(existingContent);
+    }
+
+    // On form submit, copy Quill HTML into the hidden input
+    document.querySelector('form').addEventListener('submit', function() {
+        document.getElementById('txtpdtdesc').value = quill.root.innerHTML;
+    });
 
 });
 </script>
+
 </body>
 </html> 

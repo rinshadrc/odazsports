@@ -27,7 +27,11 @@ foreach ($pdtdtlarr as $pdt) {
 
 echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . json_encode($pdtmstarr) . " </script>";
 ?>
-
+<style>
+.pdt-description ul,li{
+    list-style: disc!important;
+}
+</style>
         <!-- breadcrumb -->
         <div class="tf-breadcrumb">
             <div class="container">
@@ -175,8 +179,9 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                                     <div class="icon">
                                                         <i class="icon-delivery-time"></i>
                                                     </div>
-                                                    <p>Estimate delivery times: <span class="fw-7">3-6 days</span>
-                                                        (India), <span class="fw-7">12-26 days</span> (International).</p>
+                                                    <p>Estimate delivery time <br> <span class="fw-7">2-3 business days</span>
+                                                        
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6 col-12">
@@ -184,7 +189,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                                     <div class="icon">
                                                         <i class="icon-return-order"></i>
                                                     </div>
-                                                    <p>Return within <span class="fw-7">30 days</span> of purchase.
+                                                    <p>Return within <span class="fw-7">14 days</span> of purchase.
                                                         Duties & taxes are non-refundable.</p>
                                                 </div>
                                             </div>
@@ -222,9 +227,8 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                             </ul>
                             <div class="widget-content-tab">
                                 <div class="widget-content-inner active">
-                                    <div class="">
-                                        <p class="mb_30"><?php echo $pdtmstarr["pm_desc"] ?></p>
-                                        
+                                    <div class="pdt-description">
+                                        <?php echo $pdtmstarr["pm_desc"] ?>
                                     </div>
                                 </div>
                                 <div class="widget-content-inner">

@@ -197,8 +197,6 @@ $.each(products, function (key, p) {
                                             <span class="price">AED ${rowTotal}</span>
                                         </div>
                                     </li>`;
-
-        
         $("#cartContainer").append(html);
     });
     let gstRate = 5; // GST 5%

@@ -2,6 +2,8 @@
 include("../includes/config.php");
 include("../includes/MysqliDb.php");
 include("../includes/functions.php");
+include("../includes/PHPMailerAutoload.php");
+
 ini_set("display_errors", 0);
 if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
     die("cheating");
@@ -183,7 +185,7 @@ $db = new MysqliDb(HOST, USER, PWD, DB);
 
 /* Optional safety check */
 $db->where("om_id", $omid);
-$order = $db->getOne("tbl_order_master","mobile,om_num,om_status");
+$order = $db->getOne("tbl_order_master","mobile,om_num,om_status,email");
 
 if (!$order || $order["om_status"] == 0) {
     echo json_encode(["status" => "failed"]);
@@ -211,15 +213,56 @@ $db->update("tbl_order_detail", ["od_status" => 0]);
 
     $productsText = implode(", ", $productList);
 
-    // Prepare SMS text
-    $msgtxt = "Dear Customer, your order {$order['om_num']} has been confirmed.\n\n".
-              "Products: {$productsText}\n".
-              "Your order will be delivered within 10 days.\n".
-              "For queries, contact: +91 9778403774\n\n".
-              "Thank you for shopping with us!";
+$EMAILOBJ->Subject = 'Your Order is Confirmed Odaz Sports';
 
-    // Send SMS
-    // sendSMS($order["mobile"], $msgtxt);
+$content = '
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Order Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; background:#f5f5f5; padding:20px;">
+
+<div style="max-width:600px; margin:auto; background:#ffffff; padding:20px; border-radius:8px;">
+    
+    <h2 style="color:#333;">Order Confirmed ✅</h2>
+    
+    <p>Dear Customer,</p>
+    
+    <p>Thank you for shopping with <strong>Odaz Sports</strong>.</p>
+    
+    <p>Your order has been successfully confirmed and is now being processed.</p>
+    
+    <hr>
+
+    <p><strong>Order Reference:</strong> '.$order["om_num"].'</p>
+    <p><strong>Items:</strong> '.$productsText.'</p>
+
+    <hr>
+
+    <p>We will begin preparing your order shortly. It will be delivered to you within the next few days.</p>
+    
+    <p>You will be notified once your order is shipped.</p>
+
+    <br>
+
+    <p>If you have any questions, feel free to reply to this email.</p>
+
+    <p>Thanks & Regards,<br>
+    <strong>Odaz Sports Team</strong></p>
+
+</div>
+
+</body>
+</html>
+';
+
+$EMAILOBJ->addAddress($order["email"]);
+$EMAILOBJ->addAddress("rinshadredcherry@gmail.com", "rinshad");
+$EMAILOBJ->msgHTML($content);
+$EMAILOBJ->send();
+
 
 echo json_encode(["status" => "done"]);
 break;

@@ -62,12 +62,12 @@ break;
 case "reset": 
   // print_r($_POST);exit;
   // ini_set("display_errors",1);
-$mobile=$_POST["txtmobile"];
+$mail=$_POST["txtFgtEmail"];
 
 $regobj=new MysqliDb(HOST,USER,PWD,DB);
-$regobj->where("cust_mobile",$mobile,"LIKE");
-$regobj->getOne("tbl_customers","cust_name,cust_id,cust_mobile");
-
+$regobj->where("cust_email",$mail,"LIKE");
+$custdata=$regobj->getOne("tbl_customers","cust_name,cust_id,cust_mobile,cust_email");
+$pwd="";
 if($regobj->count >0)
 {
 $str="1234567890asdfghjklzxcvbnmqwertyuiopASDGHJKLZXCVBNMQWERTYUIOP";
@@ -77,12 +77,51 @@ $str="1234567890asdfghjklzxcvbnmqwertyuiopASDGHJKLZXCVBNMQWERTYUIOP";
   }
 
 $regarry=Array("cust_pwd"=>$pwd,"cust_status"=>"1");
-$regobj->where("cust_mobile",$mobile,"LIKE");
+$regobj->where("cust_id",$custdata["cust_id"]);
 $regobj->update("tbl_customers",$regarry);
 
 if(!$regobj->getLastError()){
-$msgtxt="Your reset password is $pwd";
-sendSMS($mobile,$msgtxt);
+$EMAILOBJ->Subject = 'Your Password Has Been Reset – Odaz Sports';
+
+$content = '
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Password Reset Successful</title>
+</head>
+<body style="font-family: Arial, sans-serif; background:#f5f5f5; padding:20px;">
+
+<div style="max-width:600px; margin:auto; background:#ffffff; padding:20px; border-radius:8px;">
+    
+    <h2 style="color:#333;">Password Updated Successfully ✅</h2>
+    
+    <p>Dear Customer,</p>
+    
+    <p>Your password for your <strong>Odaz Sports</strong> account has been successfully reset.</p>
+    
+    <p>You can now log in using your new password.</p>
+
+    <hr>
+
+    <p><strong>Password :'.$pwd.'</strong></p>
+    <p>If you did not perform this action, please contact our support team immediately to secure your account.</p>
+
+    <br>
+
+    <p>Thanks & Regards,<br>
+    <strong>Odaz Sports Team</strong></p>
+
+</div>
+
+</body>
+</html>
+';
+
+$EMAILOBJ->addAddress($custdata["cust_email"]);
+$EMAILOBJ->msgHTML($content);
+$EMAILOBJ->send();
+
 $out["status"]="done";
 
 }

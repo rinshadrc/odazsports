@@ -373,7 +373,7 @@ function footer(){
                                     </div>
                                     <div class="content">
                                         <div class="title fw-4">Free Shipping</div>
-                                        <p>Free shipping over order $120</p>
+                                        <p>Free shipping over order AED 200</p>
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +395,7 @@ function footer(){
                                     </div>
                                     <div class="content">
                                         <div class="title fw-4">14 Day Returns</div>
-                                        <p>Within 30 days for an exchange</p>
+                                        <p>Within 14 days for an exchange</p>
                                     </div>
                                 </div>
                             </div>

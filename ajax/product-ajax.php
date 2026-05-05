@@ -15,7 +15,7 @@ case 'addPdtMaster':
 	
 	$pmid=$_POST["pmid"];
 	$pdtnm=$_POST["txtpdtnm"];
-	$pdtdesc=$_POST["txtpdtdesc"];
+	$pdtdesc=htmlspecialchars_decode($_POST['txtpdtdesc']);
 	$pdtcode=$_POST["txtCode"];
 	$offertag=$_POST["txtTag"];
 	$sizechart=$_POST["sizechart"];
@@ -26,6 +26,8 @@ case 'addPdtMaster':
 	$imgname=$_POST["masterImageName"];
 	$imgar = $_FILES['crimage-data']?:[];
 	$delimg=$_POST["delimg"];
+	
+	// print_r($_POST);exit;
 
 	$dir="../uploads/";
 	if($img){
