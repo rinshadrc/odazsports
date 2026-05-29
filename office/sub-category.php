@@ -21,7 +21,7 @@ main_nav();
                 $itmcatobj = new MysqliDb(HOST, USER, PWD, DB);
                 $itmcatobj->where("sct_status",0);
                 $itmcatobj->join("tbl_category ct","ct.ct_id=sct.ct_id");
-                $itmcategory = $itmcatobj->get("tbl_sub_category sct", null, "sct_id,sct_title,ct.ct_title,sct_status");
+                $itmcategory = $itmcatobj->get("tbl_sub_category sct", null, "sct_id,sct_title,ct.ct_title,sct_status,ct.ct_id");
                 ?>
                 <table class="datatables-usertype table">
                     <thead>
@@ -44,7 +44,7 @@ main_nav();
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item openOffcanvas" href="#" data-toggle="offcanvas"  data-id="<?php echo $cat["sct_id"] ?>" data-name="<?php echo $cat["sct_title"] ?>" data-cat="<?php echo $cat["ct_title"] ?>"><i class="ri-pencil-line me-1"></i> Edit</a>
+                                            <a class="dropdown-item openOffcanvas" href="#" data-toggle="offcanvas"  data-id="<?php echo $cat["sct_id"] ?>" data-name="<?php echo $cat["sct_title"] ?>" data-cat="<?php echo $cat["ct_id"] ?>"><i class="ri-pencil-line me-1"></i> Edit</a>
                                             <a class="dropdown-item openDelModal" href="#" data-title="Item category" data-type="subcategory" data-delid="<?php echo $cat["sct_id"] ?>"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
                                         </div>
                                     </div>

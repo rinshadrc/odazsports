@@ -28,8 +28,8 @@ foreach ($pdtdtlarr as $pdt) {
 echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . json_encode($pdtmstarr) . " </script>";
 ?>
 <style>
-.pdt-description ul,li{
-    list-style: disc!important;
+.pdt-description ul li {
+    list-style-type: disc !important;
 }
 </style>
         <!-- breadcrumb -->
@@ -79,7 +79,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                      <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
                                         <div class="swiper-wrapper">
                                             <div class="swiper-slide">
-                                                <a href="#" target="_blank" class="item"
+                                                <a href="" target="_blank" class="item"
                                                     data-pswp-width="770px" data-pswp-height="1075px">
                                                     <img class="tf-image-zoom lazyload"
                                                         data-zoom="<?php echo  ROOT . 'uploads/' . $pdtmstarr["pm_image"] ?>"
@@ -91,7 +91,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                             
                                                 foreach ($pdtimgs as $img) { ?>
                                                     <div class="swiper-slide">
-                                                        <a href="#" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
+                                                        <a href="" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
                                                             <img class="tf-image-zoom lazyload"
                                                                 data-zoom="<?php echo  ROOT . 'uploads/' . $img["img_name"] ?>"
                                                                 data-src="<?php echo  ROOT . 'uploads/' . $img["img_name"] ?>"
@@ -221,9 +221,9 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                 <li class="item-title active">
                                     <span class="inner">Description</span>
                                 </li>
-                                <li class="item-title">
+                                <!-- <li class="item-title">
                                     <span class="inner">Additional Information</span>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="widget-content-tab">
                                 <div class="widget-content-inner active">
@@ -231,7 +231,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                         <?php echo $pdtmstarr["pm_desc"] ?>
                                     </div>
                                 </div>
-                                <div class="widget-content-inner">
+                                <!-- <div class="widget-content-inner">
                                     <div class="tf-product-des-demo">
                                             <div class="right">
                                                 <h3 class="fs-16 fw-5">Features</h3>
@@ -281,7 +281,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
+                                </div> -->
                                 
                             </div>
                         </div>

@@ -9,7 +9,7 @@ $pdtobj->where("ct_status", 0);
 $pdtobj->join("tbl_sub_category sct", "sct.ct_id=ct.ct_id AND sct.sct_status=0");
 $pdtobj->orderBy("ct.ct_id", "ASC");
 $catgryarr = $pdtobj->get("tbl_category ct", null, "ct.ct_id, ct.ct_title, sct.sct_id, sct.sct_title");
-// $pdtobj->where("is_featured",1);
+$pdtobj->where("pm_status", 9, "<>");
 $pdtobj->groupBy("pm.pm_id");
 $pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id");
 $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,ct_id,pm_name,pm_desc,pm_code,pm_note,pm_status,sct_id,is_featured,offer_tag,pm_image,pd.pd_price");
@@ -125,7 +125,7 @@ foreach ($pdtarray as $p) {
                                 <?php } ?>
                         </a>
                     </div>
-                    <div class="col-xl-6 tf-md-hidden">
+                    <div class="col-xl-8 tf-md-hidden">
                         <nav class="box-navigation text-center">
                             <ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">
                                 <li class="menu-item">
@@ -229,7 +229,7 @@ foreach ($pdtarray as $p) {
                             </ul>
                         </nav>
                     </div>
-                    <div class="col-xl-3 col-md-4 col-3">
+                    <div class="col-xl-1 col-md-1 col-3">
                         <ul class="nav-icon d-flex justify-content-end align-items-center gap-20">
 
                             <?php if(!$_SESSION["CUST"]){
@@ -969,7 +969,7 @@ $(document).on("click", ".remove-cart", function () {
     renderCartModal();
 });
 
-jQuery(document).on('submit', '#frmRegister', function(event) {
+jQuery(document).on('submit', '#frmRegister', function(event) { 
 event.preventDefault();
 $("#RegErrMsg").html("");
 $('#frmRegister is-invalid').removeClass('is-invalid'); 

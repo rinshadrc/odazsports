@@ -225,7 +225,7 @@ main_nav();
                             <?php 
                               $variantobj=new MysqliDb(HOST,USER,PWD,DB);
                               $variantobj->where('sz_status',9,"<>");
-                              $variantobj->orderBy('sz_title',"DESC");
+                              $variantobj->orderBy('sz_order','ASC');
                               $sizearr=$variantobj->get("tbl_sizes",null,'sz_id,sz_title');
                               foreach ($sizearr as $key => $itm) {
                               echo "<option value='$itm[sz_id]'> $itm[sz_title]</option>";

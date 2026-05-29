@@ -41,6 +41,7 @@ $custar = $cusobj->getOne("tbl_customers", "cust_id,cust_name,cust_mobile,cust_e
                                 <div class="select-custom">
                                   <select class="tf-select w-100" id="state" name="state">
                                     <option value="Abu Dhabi" <?= ($custar["state"] == "Abu Dhabi") ? "selected" : "" ?>>Abu Dhabi</option>
+                                    <option value="Sharjah" <?= ($custar["state"] == "Sharjah") ? "selected" : "" ?>>Sharjah</option>
                                     <option value="Ajman" <?= ($custar["state"] == "Ajman") ? "selected" : "" ?>>Ajman</option>
                                     <option value="Dubai" <?= ($custar["state"] == "Dubai") ? "selected" : "" ?>>Dubai</option>
                                     <option value="Fujairah" <?= ($custar["state"] == "Fujairah") ? "selected" : "" ?>>Fujairah</option>
