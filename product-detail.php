@@ -27,6 +27,8 @@ foreach ($pdtdtlarr as $pdt) {
 
 echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . json_encode($pdtmstarr) . " </script>";
 ?>
+    <link rel="stylesheet" href="<?php echo ROOT ?>css/drift-basic.min.css">
+    <link rel="stylesheet" href="<?php echo ROOT ?>css/photoswipe.css">
 <style>
 .pdt-description ul li {
     list-style-type: disc !important;
@@ -58,8 +60,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                         <div class="col-md-6">
                             <div class="tf-product-media-wrap sticky-top">
                                 <div class="thumbs-slider">
-                                    <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom"
-                                        data-direction="vertical">
+                                    <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-direction="vertical">
                                         <div class="swiper-wrapper stagger-wrap">
                                             <div class="swiper-slide stagger-item">
                                                 <div class="item">
@@ -79,7 +80,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                      <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
                                         <div class="swiper-wrapper">
                                             <div class="swiper-slide">
-                                                <a href="" target="_blank" class="item"
+                                                <a href="<?php echo  ROOT . 'uploads/' . $pdtmstarr["pm_image"] ?>" target="_blank" class="item"
                                                     data-pswp-width="770px" data-pswp-height="1075px">
                                                     <img class="tf-image-zoom lazyload"
                                                         data-zoom="<?php echo  ROOT . 'uploads/' . $pdtmstarr["pm_image"] ?>"
@@ -91,7 +92,7 @@ echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . js
                                             
                                                 foreach ($pdtimgs as $img) { ?>
                                                     <div class="swiper-slide">
-                                                        <a href="" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
+                                                        <a href="<?php echo  ROOT . 'uploads/' . $img["img_name"] ?>" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
                                                             <img class="tf-image-zoom lazyload"
                                                                 data-zoom="<?php echo  ROOT . 'uploads/' . $img["img_name"] ?>"
                                                                 data-src="<?php echo  ROOT . 'uploads/' . $img["img_name"] ?>"
