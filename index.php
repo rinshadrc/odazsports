@@ -4,14 +4,14 @@ head("Home Page");
 
 $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
 $pdtobj->where("pm_status", 9, "<>");
+$pdtobj->where("pd_status", 9, "<>");
 $pdtobj->orderBy("is_featured", "DESC");
 $pdtobj->orderBy("pm_id", "DESC");
 $pdtobj->groupBy("pm.pm_id");
 $pdtobj->join("tbl_category ct", "ct.ct_id=pm.ct_id", "INNER");
 $pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id");
 $pdtobj->join("tbl_sizes sz", "pd.sz_id=sz.sz_id", "INNER");
-
-$pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,ct.ct_id,ct.ct_title,pm_name,pm_desc,pm_code,pm_note,pm_status,sct_id,is_featured,offer_tag,pm_image,pd.pd_price,GROUP_CONCAT(sz.sz_code) AS sizes");
+$pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,ct.ct_id,ct.ct_title,pm_name,pm_desc,pm_code,pm_note,pm_status,sct_id,is_featured,offer_tag,pm_image,pd.pd_price,GROUP_CONCAT(sz.sz_code ORDER BY sz.sz_order ASC) AS sizes");
 // error_log($pdtobj->getLastQuery());
 // echo $pdtobj->getLastQuery();exit;
 $latestProducts = array_slice($pdtarray, 0, 4);
@@ -30,11 +30,20 @@ foreach ($pdtarray as $pdt) {
                 <video src="images/slider/slider-video.mp4" autoplay muted playsinline loop></video>
                 <div class="box-content">
                     <div class="container">
-                        <p class="fade-item fade-item-1 subheading text-white fw-7">SPRING COLLECTION</p>
-                        <h1 class="fade-item fade-item-2 heading text-white">End of<br> Season Sale</h1>
-                        <a href="<?php echo ROOT?>"
-                            class="fade-item fade-item-3 tf-btn fill-outline-light btn-icon radius-3"><span>Shop collection</span><i class="icon icon-arrow-right"></i></a>
-                    </div>
+                    <p class="fade-item fade-item-1 subheading text-white fw-7">
+                        PREMIUM ACTIVEWEAR
+                    </p>
+
+                    <!-- <h3 class="fade-item fade-item-2 heading text-white">
+                        Train Hard<br> Look Strong
+                    </h3> -->
+
+                    <a href="<?php echo ROOT?>products"
+                        class="fade-item fade-item-3 tf-btn fill-outline-light btn-icon radius-3">
+                        <span>Shop Now</span>
+                        <i class="icon icon-arrow-right"></i>
+                    </a>
+                </div>
                 </div>
             </div>
         </section>
@@ -134,7 +143,7 @@ foreach ($pdtarray as $pdt) {
                                         </div>
                                     </div>
                                     <div class="card-product-info">
-                                        <a href="#" class="title link"><?php echo $ltpdt["pm_name"] ?></a>
+                                        <a href="<?php echo ROOT ."product-detail/".$ltpdt["pm_id"] ?>" class="title link"><?php echo $ltpdt["pm_name"] ?></a>
                                         <span class="price">AED <?php echo $ltpdt["pd_price"] ?></span>
                                         
                                     </div>
@@ -155,23 +164,29 @@ foreach ($pdtarray as $pdt) {
         <!-- /Product -->
         <!-- Shop Collection -->
         <section class="flat-spacing-4 pt_0">
-            <div class="container">
-                <div class="tf-grid-layout md-col-2 tf-img-with-text style-2" style="background-color: #fbae16;background-image: url('images/bg.png');background-size: cover;background-repeat: no-repeat;">
-                    <div class="tf-image-wrap wow fadeInUp" data-wow-delay="0s">
-                        <img class="lazyload" data-src="images/collections/collection-65.jpg"
-                            src="images/collections/collection-65.jpg" alt="collection-img">
-                    </div>
-                    <div class="tf-content-wrap text-center w-100 wow fadeInUp" data-wow-delay="0s">
-                        <span class="sub-heading text-uppercase fw-7">GET YOUR FASHION FIX HERE</span>
-                        <div class="heading">Spring Collections</div>
-                        <p class="description">Shop our luxury silk button-up blouses made with ultra-soft, <br
-                                class="d-none d-xl-block"> washable silk.</p>
-                        <a href="#"
-                            class="tf-btn style-2 btn-fill radius-3 animate-hover-btn">Shop collection</a>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="tf-grid-layout md-col-2 tf-img-with-text style-2" style="background-color: #fbae16;background-image: url('images/bg.png');background-size: cover;background-repeat: no-repeat;">
+            <div class="tf-image-wrap wow fadeInUp" data-wow-delay="0s">
+                <img class="lazyload" data-src="images/collections/collection-65.jpg"
+                    src="images/collections/collection-65.jpg" alt="collection-img">
             </div>
-        </section>
+
+            <div class="tf-content-wrap text-center w-100 wow fadeInUp" data-wow-delay="0s">
+                <span class="sub-heading text-uppercase fw-7">PERFORMANCE MEETS STYLE</span>
+                <div class="heading">Gym Wear Collection</div>
+                <p class="description">
+                    Train harder with premium activewear designed for comfort, flexibility
+                    and performance in every workout.
+                </p>
+
+                <a href="<?php echo ROOT?>products"
+                    class="tf-btn style-2 btn-fill radius-3 animate-hover-btn">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
         <!-- /Shop Collection -->
         <!-- Categories -->
         <section class="flat-spacing-5 pt_0">
@@ -238,7 +253,7 @@ foreach ($pdtarray as $pdt) {
                                                 </div>
                                             </div>
                                             <div class="card-product-info">
-                                                <a href="#" class="title link"><?php echo $pdt["pm_name"] ?></a>
+                                                <a href="<?php echo ROOT ."product-detail/".$pdt["pm_id"] ?>" class="title link"><?php echo $pdt["pm_name"] ?></a>
                                                 <span class="price">AED <?php echo $pdt["pd_price"]; ?></span>
                                                 
                                             </div>
@@ -264,13 +279,12 @@ foreach ($pdtarray as $pdt) {
                 <video src="images/slider/slider-video-2.mp4" autoplay muted playsinline loop></video>
                 <div class="box-content text-center">
                     <div class="container wow fadeInUp" data-wow-delay="0s">
-                        <p class="subheading text-white fw-7">FREE SHIPPING OVER ORDER $120</p>
-                        <h1 class="heading text-white">Spring Collection</h1>
-                        <p class="description text-white">Here is your chance to upgrade your wardrobe with a variation
-                            of styles</p>
+                        <p class="subheading text-white fw-7">FREE SHIPPING OVER ORDER AED 200</p>
+                        <h1 class="heading text-white">Elevate Your Workout</h1>
+                        <p class="description text-white">Discover premium activewear crafted for athletes,
+    fitness lovers, and everyday performance.</p>
                         <a href="<?php echo ROOT ?>products"
-                            class="tf-btn btn-md btn-light-icon btn-icon radius-3 animate-hover-btn"><span>Shop
-                                now</span><i class="icon icon-arrow-right"></i></a>
+                            class="tf-btn btn-md btn-light-icon btn-icon radius-3 animate-hover-btn"><span>Shop now</span><i class="icon icon-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -314,9 +328,8 @@ foreach ($pdtarray as $pdt) {
                                             <i class="icon-star"></i>
                                         </div>
                                         <p class="text fw-5">
-                                            I have been shopping with this web fashion site for over a year nowand I can
-                                            confidently say it is the best online fashion site out there.
-                                        </p>
+    Loved the fit and comfort! The fabric feels premium and stretches perfectly during workouts. Fast delivery and great overall experience.
+</p>
                                         <div class="divider"></div>
                                         <div class="author box-author">
                                             <div class="box-img d-md-none">
@@ -325,8 +338,7 @@ foreach ($pdtarray as $pdt) {
                                             </div>
                                             <div class="content">
                                                 <div class="name">Jenifer Unix</div>
-                                                <a href="#" class="metas link">Purchase item :
-                                                    <span>Oversized Printed T-shirt</span></a>
+                                                <!-- <a href="#" class="metas link">Purchase item : <span>Oversized Printed T-shirt</span></a> -->
                                             </div>
 
                                         </div>
@@ -343,9 +355,8 @@ foreach ($pdtarray as $pdt) {
                                             <i class="icon-star"></i>
                                         </div>
                                         <p class="text fw-5">
-                                            Fashion website is impressive! The user-friendly interface and excellent
-                                            customer service make shopping a breeze.
-                                        </p>
+    The quality of the gym wear is amazing. Super comfortable, breathable, and perfect for intense workouts. Definitely my go-to fitness brand now.
+</p>
                                         <div class="divider"></div>
                                         <div class="author box-author">
                                             <div class="box-img d-md-none">
@@ -354,8 +365,7 @@ foreach ($pdtarray as $pdt) {
                                             </div>
                                             <div class="content">
                                                 <div class="name">Robert smith</div>
-                                                <a href="#" class="metas link">Purchase item : <span>
-                                                        The Scot Collar Mint</span></a>
+                                                <!-- <a href="#" class="metas link">Purchase item : <span> The Scot Collar Mint</span></a> -->
                                             </div>
 
                                         </div>
@@ -391,8 +401,8 @@ foreach ($pdtarray as $pdt) {
                                         <img class="lazyload img-hover" data-src="images/shop/gallery/activewear-gallery5.jpg"
                                             src="images/shop/gallery/activewear-gallery5.jpg" alt="image-gallery">
                                     </div>
-                                    <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
-                                            class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a>
+                                    <!-- <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
+                                            class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a> -->
                                 </div>
                             </div>
                             <div class="swiper-slide">
@@ -401,8 +411,8 @@ foreach ($pdtarray as $pdt) {
                                         <img class="lazyload img-hover" data-src="images/shop/gallery/activewear-gallery4.jpg"
                                             src="images/shop/gallery/activewear-gallery4.jpg" alt="image-gallery">
                                     </div>
-                                    <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
-                                            class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a>
+                                    <!-- <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
+                                            class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a> -->
                                 </div>
                             </div>
                             <div class="swiper-slide">
@@ -411,8 +421,8 @@ foreach ($pdtarray as $pdt) {
                                         <img class="lazyload img-hover" data-src="images/shop/gallery/activewear-gallery3.jpg"
                                             src="images/shop/gallery/activewear-gallery3.jpg" alt="image-gallery">
                                     </div>
-                                    <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
-                                            class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a>
+                                    <!-- <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
+                                            class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a> -->
                                 </div>
                             </div>
                             <div class="swiper-slide">
@@ -421,8 +431,8 @@ foreach ($pdtarray as $pdt) {
                                         <img class="lazyload img-hover" data-src="images/shop/gallery/activewear-gallery2.jpg"
                                             src="images/shop/gallery/activewear-gallery2.jpg" alt="image-gallery">
                                     </div>
-                                    <a href="#" class="box-icon"><span class="icon icon-bag"></span>
-                                        <span class="tooltip">View product</span></a>
+                                    <!-- <a href="#" class="box-icon"><span class="icon icon-bag"></span>
+                                        <span class="tooltip">View product</span></a> -->
                                 </div>
                             </div>
                             <div class="swiper-slide">
@@ -431,8 +441,8 @@ foreach ($pdtarray as $pdt) {
                                         <img class="lazyload img-hover" data-src="images/shop/gallery/activewear-gallery1.jpg"
                                             src="images/shop/gallery/activewear-gallery1.jpg" alt="image-gallery">
                                     </div>
-                                    <a href="#" class="box-icon"><span class="icon icon-bag"></span>
-                                        <span class="tooltip">View product</span></a>
+                                    <!-- <a href="#" class="box-icon"><span class="icon icon-bag"></span>
+                                        <span class="tooltip">View product</span></a> -->
                                 </div>
                             </div>
                         </div>
@@ -446,18 +456,18 @@ foreach ($pdtarray as $pdt) {
         <!-- /Look book -->
         <!-- Marquee -->
         <div class="tf-marquee marquee-lg line">
-            <div class="wrap-marquee">
-                <div class="marquee-item">
-                    <p>Use <a href="#" title="#">code GET30</a> at checkout for 30% off your first order</p>
-                </div>
-                <div class="marquee-item">
-                    <p>Use <a href="#" title="#">code GET30</a> at checkout for 30% off your first order</p>
-                </div>
-                <div class="marquee-item">
-                    <p>Use <a href="#" title="#">code GET30</a> at checkout for 30% off your first order</p>
-                </div>
-            </div>
+    <div class="wrap-marquee">
+        <div class="marquee-item">
+            <p>Welcome to our store — Explore the latest collections and best deals</p>
         </div>
+        <div class="marquee-item">
+            <p>Quality products at the best prices</p>
+        </div>
+        <div class="marquee-item">
+            <p>Fast delivery and secure shopping experience</p>
+        </div>
+    </div>
+</div>
       
        <?php footer();?>
 

@@ -10,6 +10,7 @@ $pdtobj->join("tbl_sub_category sct", "sct.ct_id=ct.ct_id AND sct.sct_status=0")
 $pdtobj->orderBy("ct.ct_id", "ASC");
 $catgryarr = $pdtobj->get("tbl_category ct", null, "ct.ct_id, ct.ct_title, sct.sct_id, sct.sct_title");
 $pdtobj->where("pm_status", 9, "<>");
+$pdtobj->where("pd_status", 9, "<>");
 $pdtobj->groupBy("pm.pm_id");
 $pdtobj->join("tbl_product_detail pd", "pd.pm_id=pm.pm_id");
 $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,ct_id,pm_name,pm_desc,pm_code,pm_note,pm_status,sct_id,is_featured,offer_tag,pm_image,pd.pd_price");
