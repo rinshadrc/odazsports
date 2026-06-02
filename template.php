@@ -301,10 +301,10 @@ echo "<li class='nav-account'><a href='#login' data-bs-toggle='modal' class='nav
                         <a href="<?php echo ROOT ?>" class="text-need">Need help ?</a>
                     </div>
                     <ul class="mb-info"> <br>
-                        <li>Address: Lorem Ipsum is simply dummy <br>
-                            the printing and </li>
-                        <li>Email: <b>info@odaz.com</b></li>
-                        <li>Phone: <b>(212) 555-1234</b></li>
+                        <li>Address: Odaz LLC, SHAMS Free Zone, Sharjah, United Arab Emirates
+                            </li>
+                        <li>Email: <b>info@odazsports.com</b></li>
+                        <li>Phone: <b>+971 50 193 1043</b></li>
                     </ul>
                 </div>
             </div>
@@ -424,7 +424,7 @@ function footer(){
                 <div class="footer-body">
                     <div class="container">
                         <div class="row">
-                            <div class="col-xl-4 col-md-6 col-12">
+                            <div class="col-xl-2 col-md-6 col-12">
                                 <div class="footer-infor">
                                     <div class="footer-logo">
                                         <a href="<?php echo ROOT ?>">
@@ -433,13 +433,13 @@ function footer(){
                                     </div>
                                     <ul>
                                         <li>
-                                            <p>Address: Lorem Ipsum is simply dummy text of <br> the printing and </p>
+                                            <p>Address: Odaz LLC, SHAMS Free Zone, Sharjah, United Arab Emirates </p>
                                         </li>
                                         <li>
-                                            <p>Email: <a href="#">info@odaz.com</a></p>
+                                            <p>Email: <a href="#">info@odazsports.com</a></p>
                                         </li>
                                         <li>
-                                            <p>Phone: <a href="#">(123) 555-1234</a></p>
+                                            <p>Phone: <a href="#">+971 50 193 1043</a></p>
                                         </li>
                                     </ul>
                                     <a href="<?php echo ROOT ?>contactus" class="tf-btn btn-line">Get direction<i

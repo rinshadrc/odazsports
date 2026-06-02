@@ -23,8 +23,6 @@ $pdtdtlarr = $pdtobj->get("tbl_product_detail pd", null, "pd.pd_id,pm_id,pd_pric
 foreach ($pdtdtlarr as $pdt) {
     $pdtdtl[$pdt["pd_id"]] = array("pdtid" => $pdt["pd_id"], "clrname" => $pdt["clname"], "clrid" => $pdt["pd_color"], "code" => $pdt["clcode"], "size" => $pdt["sz_id"], "sizename" => $pdt["sz_code"], "price" => $pdt["pd_price"],"strikeprice"=>$pdt["pd_strikeprice"],"sizetitle"=>$pdt["sz_title"]);
 }
-
-
 echo "<script> var productdtl=" . json_encode($pdtdtl) . "; var pdtMaster=" . json_encode($pdtmstarr) . " </script>";
 ?>
     <link rel="stylesheet" href="<?php echo ROOT ?>css/drift-basic.min.css">

@@ -10,8 +10,15 @@ if($pid){
 }
 head($pid ?"Update Products":"Create Products");
 main_nav();
+$pckobj->where("sct_status",0);
+$catarr = $pckobj->get("tbl_sub_category", null, "sct_id,sct_title,ct_id");
+
 ?>
 <!-- In your <head>, add this -->
+  <script>
+    var subcats = <?php echo json_encode($catarr) ?>;
+    var selectedSubCat = "<?php echo $product['sct_id'] ?? ''; ?>";
+    </script>
 <style>
 .ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; border-color: #dee2e6; background: #f8f9fa; }
 .ql-container.ql-snow { border-radius: 0 0 8px 8px; border-color: #dee2e6; min-height: 100px; font-size: 15px; }
@@ -69,14 +76,7 @@ main_nav();
                   <div class="form-floating form-floating-outline mb-6">
                     <select class="form-select required" name="selSubCatgry" id="selSubCatgry">
                       <option value="">Select</option>
-                      <?php
-                      $catobj->where("sct_status",0);
-                      $catarr = $catobj->get("tbl_sub_category", null, "sct_id,sct_title");
-                      foreach ($catarr as $key => $cat) {
-                        $sel=$product['sct_id']==$cat["sct_id"]?"selected":"";
-                        echo "<option value='$cat[sct_id]' $sel>$cat[sct_title]</option>";
-                      }
-                      ?>
+                      
                     </select>
                     <label for="selSubCatgry">Sub Category</label>
                   </div>
@@ -293,7 +293,7 @@ main_nav();
   <script>
 $(function() {
 /*ASSIGN SELECT2*/
-
+// $("#selCatgry").trigger("change");
   $(".selColour").each(function() {
     $(this).select2({
       placeholder: "Select Colour",
@@ -307,6 +307,33 @@ $(function() {
       dropdownParent: $(this).parent() 
     }); 
   }); 
+$(document).ready(function () {
+
+    $("#selCatgry").on("change", function () {
+
+        var catId = $(this).val();
+        var options = '<option value="">Select</option>';
+
+        $.each(subcats, function (i, subcat) {
+
+            if (subcat.ct_id == catId) {
+
+                var sel = (subcat.sct_id == selectedSubCat) ? 'selected' : '';
+
+                options += '<option value="' + subcat.sct_id + '" ' + sel + '>' +
+                    subcat.sct_title +
+                    '</option>';
+            }
+        });
+
+        $("#selSubCatgry").html(options);
+
+    });
+
+    // Load subcategories for the already selected category
+    $("#selCatgry").change();
+
+});
 /*ASSIGN SELECT2 ENDS*/
   // $(".select2-container").removeClass('required');
 

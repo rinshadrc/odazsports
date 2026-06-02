@@ -141,6 +141,13 @@ foreach ($pdtarray as $pdt) {
                                             ?>
                                            
                                         </div>
+                                <?php if($ltpdt["offer_tag"]){ ?>
+
+                                        <div class="on-sale-wrap text-end">
+                                            <div class="on-sale-item"><?php echo $ltpdt["offer_tag"] ?></div>
+                                        </div>
+                                <?php } ?> 
+
                                     </div>
                                     <div class="card-product-info">
                                         <a href="<?php echo ROOT ."product-detail/".$ltpdt["pm_id"] ?>" class="title link"><?php echo $ltpdt["pm_name"] ?></a>
@@ -251,6 +258,12 @@ foreach ($pdtarray as $pdt) {
                                             }
                                             ?>
                                                 </div>
+                                                 <?php if($pdt["offer_tag"]){ ?>
+
+                                        <div class="on-sale-wrap text-end">
+                                            <div class="on-sale-item"><?php echo $pdt["offer_tag"] ?></div>
+                                        </div>
+                                <?php } ?> 
                                             </div>
                                             <div class="card-product-info">
                                                 <a href="<?php echo ROOT ."product-detail/".$pdt["pm_id"] ?>" class="title link"><?php echo $pdt["pm_name"] ?></a>
