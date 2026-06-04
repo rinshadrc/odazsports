@@ -3,10 +3,14 @@ include("template.php");
 head("Products List", 0);
 ini_set("display_errors",0);
 
+$scatid = isset($_GET['scat']) ? intval($_GET['scat']) : null;
 $catid = isset($_GET['cat']) ? intval($_GET['cat']) : null;
 $pdtobj = new MysqliDb(HOST, USER, PWD, DB);
 if($catid){
-$pdtobj->where("pm.sct_id", $catid);
+$pdtobj->where("pm.ct_id", $catid);
+}
+if($scatid){
+$pdtobj->where("pm.sct_id", $scatid);
 }
 $pdtobj->where("pm_status", 9, "<>");
 $pdtobj->where("pd_status", 9, "<>");
@@ -21,7 +25,18 @@ $pdtarray = $pdtobj->get("tbl_product_master pm", null, "pm.pm_id,pm.sct_id,pm_n
 <!-- page-title -->
 <div class="tf-page-title" style="background-color: #fbae16;background-image: url('<?php echo ROOT?>images/bg.png');background-size: cover;background-repeat: no-repeat;">
     <div class="container-full">
-        <div class="heading text-center"><?php echo ($catid && !empty($pdtarray))? "Collections of ".$pdtarray[0]["sct_title"]:"All Collections" ?></div>
+        <?php if(isset($_GET['cat'])) { ?>
+    <div class="heading text-center">
+        <?php 
+            if($_GET['cat'] == 1)      echo "Men's Collections";
+            elseif($_GET['cat'] == 2)  echo "Women's Collections";
+            elseif($_GET['cat'] == 3)  echo "Accessories";
+        ?>
+    </div>
+<?php }else{ ?>
+        <div class="heading text-center"><?php echo ($scatid && !empty($pdtarray))? "Collections of ".$pdtarray[0]["sct_title"]:"All Collections" ?></div>
+
+        <?php } ?>
         <p class="text-center text-2 text_black-2 mt_5">Explore our complete collection of premium products crafted with quality and care. 
             Find the perfect choice that suits your needs and style. </p>
     </div>

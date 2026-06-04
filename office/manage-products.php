@@ -328,7 +328,7 @@ $(document).ready(function () {
 
         $("#selSubCatgry").html(options);
 
-    });
+    }); 
 
     // Load subcategories for the already selected category
     $("#selCatgry").change();

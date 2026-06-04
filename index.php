@@ -54,36 +54,36 @@ foreach ($pdtarray as $pdt) {
                 <div class="masonry-layout-v2">
                     <div class="item-1 collection-item-v5 hover-img wow fadeInUp" data-wow-delay="0s">
                         <div class="collection-inner">
-                            <a href="<?php echo ROOT?>products" class="collection-image img-style">
+                            <a href="<?php echo ROOT?>products?cat=3" class="collection-image img-style">
                                 <img class="lazyload" data-src="images/collections/collection-64.jpg"
                                     src="images/collections/collection-64.jpg" alt="collection-img">
                             </a>
                             <div class="collection-content">
-                                <a href="<?php echo ROOT?>products" class="collection-title"><span>Accessories</span><i
+                                <a href="<?php echo ROOT?>products?cat=3" class="collection-title"><span>Accessories</span><i
                                         class="icon icon-arrow1-top-left"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="item-2 collection-item-v5 hover-img wow fadeInUp" data-wow-delay="0s">
                         <div class="collection-inner">
-                            <a href="<?php echo ROOT?>products" class="collection-image img-style">
+                            <a href="<?php echo ROOT?>products?cat=1" class="collection-image img-style">
                                 <img class="lazyload" data-src="images/collections/collection-24.jpg"
                                     src="images/collections/collection-24.jpg" alt="collection-img">
                             </a>
                             <div class="collection-content">
-                                <a href="<?php echo ROOT?>products" class="collection-title"><span>Men</span><i
+                                <a href="<?php echo ROOT?>products?cat=1" class="collection-title"><span>Men</span><i
                                         class="icon icon-arrow1-top-left"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="item-3 collection-item-v5 hover-img wow fadeInUp" data-wow-delay="0s">
                         <div class="collection-inner">
-                            <a href="<?php echo ROOT?>products" class="collection-image img-style">
+                            <a href="<?php echo ROOT?>products?cat=2" class="collection-image img-style">
                                 <img class="lazyload" data-src="images/collections/collection-42.jpg"
                                     src="images/collections/collection-42.jpg" alt="collection-img">
                             </a>
                             <div class="collection-content">
-                                <a href="<?php echo ROOT?>products" class="collection-title"><span>Women</span><i
+                                <a href="<?php echo ROOT?>products?cat=2" class="collection-title"><span>Women</span><i
                                         class="icon icon-arrow1-top-left"></i></a>
                             </div>
                         </div>
